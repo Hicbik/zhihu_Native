@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+</head>
+<body>
+<p>这里是内容</p>
+{#通过views传过来的list判断#}
+{% for i in list %}
+    <p>我是{{i}}</p>
+{% endfor %}
+</body>
+</html>
