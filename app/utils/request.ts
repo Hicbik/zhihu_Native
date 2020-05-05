@@ -23,8 +23,8 @@ export class QuestionRequest {
     static url = 'question/'
 
 
-    static RecommendList ({page, type}: { page: number, type?: string  }) {
-        return axios.get(this.url + 'RecommendList', {params: {page, type}})
+    static RecommendListData ({page}: { page: number }) {
+        return axios.get(this.url + 'RecommendListData', {params: {page}})
     }
 
 

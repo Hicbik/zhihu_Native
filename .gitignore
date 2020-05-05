@@ -4,6 +4,7 @@
 
 # Xcode
 #
+app/mock
 build/
 *.pbxuser
 !default.pbxuser

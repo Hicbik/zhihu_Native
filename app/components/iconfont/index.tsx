@@ -4,13 +4,17 @@
 import React, { FunctionComponent } from 'react';
 import { ViewProps } from 'react-native';
 import { GProps } from 'react-native-svg';
+import IconSousuo from './IconSousuo';
+import IconJiahao from './IconJiahao';
+import Icon from './Icon';
+import IconZhibo from './IconZhibo';
 import IconGengduo from './IconGengduo';
 import IconHuabanfuben from './IconHuabanfuben';
 import IconTongzhi from './IconTongzhi';
 import IconFaxian from './IconFaxian';
 import IconWenzhang from './IconWenzhang';
 
-export type IconNames = 'gengduo' | 'huabanfuben' | 'tongzhi' | 'faxian' | 'wenzhang';
+export type IconNames = 'sousuo' | 'jiahao' | '-' | 'zhibo' | 'gengduo' | 'huabanfuben' | 'tongzhi' | 'faxian' | 'wenzhang';
 
 interface Props extends GProps, ViewProps {
   name: IconNames;
@@ -20,6 +24,14 @@ interface Props extends GProps, ViewProps {
 
 const IconFont: FunctionComponent<Props> = ({ name, ...rest }) => {
   switch (name) {
+    case 'sousuo':
+      return <IconSousuo {...rest} />;
+    case 'jiahao':
+      return <IconJiahao {...rest} />;
+    case '-':
+      return <Icon {...rest} />;
+    case 'zhibo':
+      return <IconZhibo {...rest} />;
     case 'gengduo':
       return <IconGengduo {...rest} />;
     case 'huabanfuben':
