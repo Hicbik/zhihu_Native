@@ -4,6 +4,9 @@
 import React, { FunctionComponent } from 'react';
 import { ViewProps } from 'react-native';
 import { GProps } from 'react-native-svg';
+import IconXiangshangsanjiaoxing from './IconXiangshangsanjiaoxing';
+import IconXiangxiasanjiaoxing from './IconXiangxiasanjiaoxing';
+import IconPinglun from './IconPinglun';
 import IconSousuo from './IconSousuo';
 import IconJiahao from './IconJiahao';
 import Icon from './Icon';
@@ -14,7 +17,7 @@ import IconTongzhi from './IconTongzhi';
 import IconFaxian from './IconFaxian';
 import IconWenzhang from './IconWenzhang';
 
-export type IconNames = 'sousuo' | 'jiahao' | '-' | 'zhibo' | 'gengduo' | 'huabanfuben' | 'tongzhi' | 'faxian' | 'wenzhang';
+export type IconNames = 'xiangshangsanjiaoxing' | 'xiangxiasanjiaoxing' | 'pinglun' | 'sousuo' | 'jiahao' | '-' | 'zhibo' | 'gengduo' | 'huabanfuben' | 'tongzhi' | 'faxian' | 'wenzhang';
 
 interface Props extends GProps, ViewProps {
   name: IconNames;
@@ -24,6 +27,12 @@ interface Props extends GProps, ViewProps {
 
 const IconFont: FunctionComponent<Props> = ({ name, ...rest }) => {
   switch (name) {
+    case 'xiangshangsanjiaoxing':
+      return <IconXiangshangsanjiaoxing {...rest} />;
+    case 'xiangxiasanjiaoxing':
+      return <IconXiangxiasanjiaoxing {...rest} />;
+    case 'pinglun':
+      return <IconPinglun {...rest} />;
     case 'sousuo':
       return <IconSousuo {...rest} />;
     case 'jiahao':

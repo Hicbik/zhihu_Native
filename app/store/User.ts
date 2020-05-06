@@ -21,13 +21,13 @@ export interface UserProps {
 
 export default class User {
     @observable
-    public User: UserProps = {
+    public store: UserProps = {
         isLogin: false
     }
 
     @action
     public Token () {
-        this.User.isLogin = true
+        this.store.isLogin = true
     }
 }
 
