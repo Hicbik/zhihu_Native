@@ -1,2 +1,8 @@
 *.pbxproj -text
 *.md linguist-language=TypeScript
+*.xml linguist-language=TypeScript
+*.java linguist-language=TypeScript
+*.xib linguist-language=TypeScript
+*.json linguist-language=TypeScript
+*.js linguist-language=TypeScript
+

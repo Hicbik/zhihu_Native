@@ -1,7 +1,7 @@
 import React, { FC } from 'react'
 import { View, Text } from 'react-native'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
-import { useLocalStore } from 'mobx-react'
+import { useLocalStore, useObserver } from 'mobx-react'
 import store from '../../store'
 import IconWenzhang from '../../components/iconfont/IconWenzhang'
 import IconFaxian from '../../components/iconfont/IconFaxian'
@@ -9,6 +9,7 @@ import IconTongzhi from '../../components/iconfont/IconTongzhi'
 import IconHuabanfuben from '../../components/iconfont/IconHuabanfuben'
 
 import Home from './screens/Home'
+import My from './screens/My'
 
 const Tab = createMaterialBottomTabNavigator()
 
@@ -24,9 +25,9 @@ const Index: FC = () => {
 
     const state = useLocalStore(() => store.User.store)
 
-    console.log(state)
+    console.log(state.isLogin)
 
-    return (
+    return useObserver(() => (
         <Tab.Navigator
             barStyle={{backgroundColor: '#fff', height: 'auto'}}
             activeColor='#0084ff'
@@ -64,10 +65,10 @@ const Index: FC = () => {
                     title: state.isLogin ? '我的' : '未登录',
                     tabBarIcon: ({color}) => <IconHuabanfuben color={color} />
                 }}
-                component={Demo}
+                component={My}
             />
         </Tab.Navigator>
-    )
+    ))
 }
 
 export default Index

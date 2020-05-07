@@ -4,6 +4,12 @@
 import React, { FunctionComponent } from 'react';
 import { ViewProps } from 'react-native';
 import { GProps } from 'react-native-svg';
+import IconShezhi from './IconShezhi';
+import IconArrowRight from './IconArrowRight';
+import IconArrowLift from './IconArrowLift';
+import IconArrowUp from './IconArrowUp';
+import IconClose from './IconClose';
+import IconArrowDown from './IconArrowDown';
 import IconXiangshangsanjiaoxing from './IconXiangshangsanjiaoxing';
 import IconXiangxiasanjiaoxing from './IconXiangxiasanjiaoxing';
 import IconPinglun from './IconPinglun';
@@ -17,7 +23,7 @@ import IconTongzhi from './IconTongzhi';
 import IconFaxian from './IconFaxian';
 import IconWenzhang from './IconWenzhang';
 
-export type IconNames = 'xiangshangsanjiaoxing' | 'xiangxiasanjiaoxing' | 'pinglun' | 'sousuo' | 'jiahao' | '-' | 'zhibo' | 'gengduo' | 'huabanfuben' | 'tongzhi' | 'faxian' | 'wenzhang';
+export type IconNames = 'shezhi' | 'arrow-right' | 'arrow-lift' | 'arrow-up' | 'close' | 'arrow-down' | 'xiangshangsanjiaoxing' | 'xiangxiasanjiaoxing' | 'pinglun' | 'sousuo' | 'jiahao' | '-' | 'zhibo' | 'gengduo' | 'huabanfuben' | 'tongzhi' | 'faxian' | 'wenzhang';
 
 interface Props extends GProps, ViewProps {
   name: IconNames;
@@ -27,6 +33,18 @@ interface Props extends GProps, ViewProps {
 
 const IconFont: FunctionComponent<Props> = ({ name, ...rest }) => {
   switch (name) {
+    case 'shezhi':
+      return <IconShezhi {...rest} />;
+    case 'arrow-right':
+      return <IconArrowRight {...rest} />;
+    case 'arrow-lift':
+      return <IconArrowLift {...rest} />;
+    case 'arrow-up':
+      return <IconArrowUp {...rest} />;
+    case 'close':
+      return <IconClose {...rest} />;
+    case 'arrow-down':
+      return <IconArrowDown {...rest} />;
     case 'xiangshangsanjiaoxing':
       return <IconXiangshangsanjiaoxing {...rest} />;
     case 'xiangxiasanjiaoxing':

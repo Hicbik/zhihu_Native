@@ -19,6 +19,21 @@ axios.interceptors.response.use(
 )
 
 
+export class UserRequest {
+    static url = 'user/'
+
+    static signUp ({phone, password}: { phone: string, password: string }) {
+        return axios.post(this.url + 'signUp', {phone, password})
+    }
+
+    static signIn ({phone, password}: { phone: string, password: string }) {
+        return axios.post(this.url + 'signIn', {phone, password})
+    }
+
+
+}
+
+
 export class QuestionRequest {
     static url = 'question/'
 

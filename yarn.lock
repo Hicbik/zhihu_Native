@@ -5216,7 +5216,7 @@ mkdirp@^0.5.1:
   dependencies:
     minimist "^1.2.5"
 
-mobx-react-lite@2:
+mobx-react-lite@2, mobx-react-lite@^2.0.6:
   version "2.0.6"
   resolved "https://registry.npm.taobao.org/mobx-react-lite/download/mobx-react-lite-2.0.6.tgz#e1307a2b271c6a6016c8ad815a25014b7f95997d"
   integrity sha1-4TB6KyccamAWyK2BWiUBS3+VmX0=

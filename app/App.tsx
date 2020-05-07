@@ -1,9 +1,11 @@
 import 'react-native-gesture-handler'
+import 'mobx-react-lite/batchingForReactNative'
 import React, { FC, useEffect } from 'react'
 import { StatusBar } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
+
 import { Provider } from 'mobx-react'
 import RNBootSplash from 'react-native-bootsplash'
 import store from './store'
@@ -11,6 +13,7 @@ import store from './store'
 import Index from './screens/Index'
 import Question from './screens/Question'
 import Search from './screens/Search'
+import SignIn from './screens/SignIn'
 
 const Stack = createStackNavigator()
 
@@ -50,6 +53,16 @@ const App: FC = () => {
                                     cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid
                                 }}
                             />
+
+                            <Stack.Screen
+                                name='SignIn'
+                                component={SignIn}
+                                options={{
+                                    headerShown: false,
+                                    cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid
+                                }}
+                            />
+
 
                         </Stack.Navigator>
 
