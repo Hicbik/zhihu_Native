@@ -1,9 +1,15 @@
 import React, { FC } from 'react'
-import { View, Text } from 'react-native'
-import { useRoute } from '@react-navigation/native'
+import { View, Text, StatusBar } from 'react-native'
+import { useRoute, useFocusEffect } from '@react-navigation/native'
 
 
 const Question: FC = () => {
+
+
+    useFocusEffect(() => {
+        StatusBar.setBackgroundColor('#fff')
+        return () => StatusBar.setBackgroundColor('#ebeff2')
+    })
 
     const route = useRoute<any>()
 

@@ -1,10 +1,13 @@
 import axios from 'axios'
-
+import AsyncStorage from '@react-native-community/async-storage'
+import store from '../store/index'
 
 axios.defaults.baseURL = 'http://192.168.31.218:7001/'
 
 axios.interceptors.request.use(
-    config => {
+    async config => {
+        const token = await AsyncStorage.getItem('token')
+        if (token) config.headers.Authorization = token
         return config
     },
     err => {
@@ -22,6 +25,19 @@ axios.interceptors.response.use(
 export class UserRequest {
     static url = 'user/'
 
+    static async Token () {
+
+        const token = await AsyncStorage.getItem('token')
+        if (!token) return
+        const res: any = await axios.post(this.url + 'Token')
+        if (res.state === 'err' || !res.data) return await AsyncStorage.removeItem('token')
+        store.dispatch({
+            type: 'user/signIn',
+            value: {...res.data}
+        })
+    }
+
+
     static signUp ({phone, password}: { phone: string, password: string }) {
         return axios.post(this.url + 'signUp', {phone, password})
     }
@@ -30,6 +46,9 @@ export class UserRequest {
         return axios.post(this.url + 'signIn', {phone, password})
     }
 
+    static people ({_id}: { _id: string }): any {
+        return axios.get(this.url + 'people', {params: {_id}})
+    }
 
 }
 

@@ -1,22 +1,22 @@
 import React, { FC } from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import styled from 'styled-components/native'
-import { View, TouchableHighlight } from 'react-native'
+import { View, TouchableHighlight, TouchableWithoutFeedback } from 'react-native'
 import IconArrowRight from '../../../../components/iconfont/IconArrowRight'
 import SearchInput from './SearchInput'
 import { useNavigation } from '@react-navigation/native'
-
+import { UserProps } from '../../../../type'
 
 interface Props {
-    state: any
+    state: UserProps
 }
 
 const Header: FC<Props> = ({state}) => {
     const navigation = useNavigation()
 
 
-    const LinkTo = (name: string) => () => {
-        navigation.navigate(name)
+    const LinkTo = (name: string, args?: object) => () => {
+        navigation.navigate(name, {...args})
     }
 
     return (
@@ -25,18 +25,19 @@ const Header: FC<Props> = ({state}) => {
             <PeopleWrapper>
                 {
                     state.isLogin ? (
-                        <People>
-                            <Avatar
-                                source={{uri: 'https://pic2.zhimg.com/v2-fc466e21693dc8f06d8ec4485a110428_is.jpg'}} />
-                            <View>
-                                <Text>阿库娅</Text>
-                                <MinorText>智慧女神</MinorText>
-                            </View>
-                            <View style={{marginLeft: 'auto', flexDirection: 'row', alignItems: 'center'}}>
-                                <MinorText>个人主页</MinorText>
-                                <IconArrowRight color='#999' size={16} />
-                            </View>
-                        </People>
+                        <TouchableWithoutFeedback onPress={LinkTo('People', {_id: state._id})}>
+                            <People >
+                                <Avatar source={{uri: state.avatar}} />
+                                <View>
+                                    <Text>{state.nickname}</Text>
+                                    <MinorText>{state.one_sentence_introduction}</MinorText>
+                                </View>
+                                <View style={{marginLeft: 'auto', flexDirection: 'row', alignItems: 'center'}}>
+                                    <MinorText>个人主页</MinorText>
+                                    <IconArrowRight color='#999' size={16} />
+                                </View>
+                            </People>
+                        </TouchableWithoutFeedback>
                     ) : (
                         <LoginWrapper>
                             <Text>登录知乎，体验更多功能!</Text>
@@ -48,7 +49,7 @@ const Header: FC<Props> = ({state}) => {
                 }
                 <InfoWrapper>
                     <View style={{alignItems: 'center'}}>
-                        <Text>42</Text>
+                        <Text>{state.attention_count || 0}</Text>
                         <Text style={{fontSize: 14}}>我的关注</Text>
                     </View>
                     <Line />
@@ -97,13 +98,14 @@ left: 15px;
 background-color: #fff;
 border-radius: 15px;
 width: 100%;
-padding: 10px;
+padding: 10px 15px;
 `
 
 const People = styled.View`
 flex-direction: row;
 align-items: center;
 margin-bottom: 10px;
+margin-top: 5px;
 `
 
 const Avatar = styled.Image`
@@ -126,6 +128,7 @@ const InfoWrapper = styled.View`
 flex-direction: row;
 align-items: center;
 justify-content: center;
+margin-bottom: 10px;
 `
 const Line = styled.View`
 width: 1px;

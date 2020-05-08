@@ -1,7 +1,6 @@
-import User from './User'
+import { createStore } from 'redux'
+import rootReducer from './reducer'
 
-const store = {
-    User: new User()
-}
+const store = () => createStore(rootReducer)
 
-export default store
+export default store()

@@ -1,27 +1,24 @@
 import React, { FC } from 'react'
 import { StatusBar } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native'
-import { useLocalStore, useObserver } from 'mobx-react-lite'
-import store from '../../../../store'
+import { useTypedSelector } from '../../../../store/reducer'
 import Header from './Header'
 
 const My: FC = () => {
 
-    const state = useLocalStore(() => store.User.store)
+    const state = useTypedSelector(state => state.User)
 
     useFocusEffect(() => {
         StatusBar.setBackgroundColor('#158dfe')
-        return () => {
-            StatusBar.setBackgroundColor('#ebeff2')
-        }
+        return () => StatusBar.setBackgroundColor('#ebeff2')
     })
 
 
-    return useObserver(() => (
+    return (
         <>
-            <Header state={state}  />
+            <Header state={state} />
         </>
-    ))
+    )
 }
 
 export default My

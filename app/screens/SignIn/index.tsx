@@ -1,15 +1,16 @@
 import React, { FC, useState } from 'react'
-import { TouchableOpacity, View } from 'react-native'
+import { TouchableOpacity, View, ToastAndroid } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
 import { useNavigation } from '@react-navigation/native'
+import { useDispatch } from 'react-redux'
 import styled from 'styled-components/native'
 import IconClose from '../../components/iconfont/IconClose'
 import Button from '../../components/Button'
 import { UserRequest } from '../../utils/request'
-import {useLocalStore} from 'mobx-react-lite'
-import store from '../../store'
 
 const SignIn: FC = () => {
-    const state = useLocalStore(()=>store.User)
+
+    const display = useDispatch()
     const navigation = useNavigation()
     const [user, setUser] = useState({
         phone: '',
@@ -34,7 +35,7 @@ const SignIn: FC = () => {
         setFocus(name)
     }
 
-    const _haddleType = () => {
+    const _handleType = () => {
         setType(type === '登录' ? '注册' : '登录')
         setUser({
             phone: '',
@@ -48,7 +49,13 @@ const SignIn: FC = () => {
         let res: any
         if (type === '注册') res = await UserRequest.signUp({phone, password})
         if (type === '登录') res = await UserRequest.signIn({phone, password})
-        state.SignIn(res.data)
+        if (res.state === 'err') return ToastAndroid.show(res.errMsg, ToastAndroid.SHORT)
+        display({
+            type: 'user/signIn',
+            value: res.data
+        })
+        await AsyncStorage.setItem('token',res.token)
+        goBack()
     }
 
     return (
@@ -98,11 +105,11 @@ const SignIn: FC = () => {
                         />
                     )
                 }
-                <View style={{marginTop: 10}}><
-                    Button onPress={_onButton} disabled={!isDisabled()}>{type}</Button>
+                <View style={{marginTop: 10}}>
+                    <Button onPress={_onButton} disabled={!isDisabled()}>{type}</Button>
                 </View>
                 <View style={{marginTop: 15}}>
-                    <TouchableOpacity onPress={_haddleType}>
+                    <TouchableOpacity onPress={_handleType}>
                         <Tips> {type === '登录' ? '没有账号?去注册' : '已有账号?去登录'}</Tips>
                     </TouchableOpacity>
                 </View>
@@ -131,7 +138,7 @@ padding: 15px;
 `
 const Input = styled.TextInput`
 border-bottom-width: 2px;
-border-bottom-color: ${props => props.focus ? '#0084ff' : '#d3d3d3'};
+border-bottom-color: ${(props: { focus: boolean }) => props.focus ? '#0084ff' : '#d3d3d3'};
 font-size: 18px;
 margin-bottom: 10px;
 `
@@ -139,5 +146,6 @@ const Tips = styled.Text`
 color: #8590a6;
 font-size: 14px;
 `
+
 
 export default SignIn

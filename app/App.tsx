@@ -1,30 +1,35 @@
 import 'react-native-gesture-handler'
-import 'mobx-react-lite/batchingForReactNative'
 import React, { FC, useEffect } from 'react'
 import { StatusBar } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { CardStyleInterpolators, createStackNavigator } from '@react-navigation/stack'
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context'
-
-import { Provider } from 'mobx-react'
 import RNBootSplash from 'react-native-bootsplash'
+import { Provider } from 'react-redux'
+import { UserRequest } from './utils/request'
 import store from './store'
 
 import Index from './screens/Index'
 import Question from './screens/Question'
 import Search from './screens/Search'
 import SignIn from './screens/SignIn'
+import People from './screens/People'
 
 const Stack = createStackNavigator()
 
 const App: FC = () => {
 
     useEffect(() => {
-        RNBootSplash.hide({duration: 250})
+        ;(async () => {
+            await Promise.all([
+                RNBootSplash.hide({duration: 250}),
+                UserRequest.Token()
+            ])
+        })()
     }, [])
 
     return (
-        <Provider {...store}>
+        <Provider store={store}>
             <SafeAreaProvider>
                 <NavigationContainer>
                     <StatusBar barStyle='dark-content' backgroundColor='#ebeff2' />
@@ -59,8 +64,17 @@ const App: FC = () => {
                                 component={SignIn}
                                 options={{
                                     headerShown: false,
-                                    cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid
                                 }}
+                            />
+
+                            <Stack.Screen
+                                name='People'
+                                component={People}
+                                options={{
+                                    headerStyle: {backgroundColor: '#b8c0d7', elevation: 0},
+                                    title:''
+                                }}
+
                             />
 
 
