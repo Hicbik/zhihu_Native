@@ -1,39 +1,27 @@
 import React, { FC, useState, useEffect, Fragment, useImperativeHandle } from 'react'
 import { FlatList, RefreshControl } from 'react-native'
 import styled from 'styled-components/native'
-import Skeleton from '../../../../components/Skeleton'
-import FadeView from '../../../../components/FadeView'
+import Skeleton from './Skeleton'
+import FadeView from './FadeView'
 
 
 interface Props {
     Request: ({page}: { page: number }) => any,
     renderItem: ({item, index}: { item: any, index: number }) => any,
-    TipsColor: string,
-    TipsTitle: string,
-    HeaderComponet?: () => React.ReactNode,
+    TipsColor?: string,
+    TipsTitle?: string,
     ListHeaderComponent?: any,
-    cRef?: any
+    cRef?: any,
+    Refresh?: boolean,
 }
 
-const ListBase: FC<Props> = ({
-    Request,
-    renderItem,
-    TipsColor,
-    TipsTitle,
-    HeaderComponet,
-    ListHeaderComponent,
-    cRef
-}) => {
 
+const useList = ({Request}: { Request: ({page}: { page: number }) => any }) => {
     const [data, setData] = useState<any[]>([])
     const [page, setPage] = useState(1)
     const [refreshing, setRefreshing] = useState(false)
     const [showTips, setShowTips] = useState(false)
     const [isLoad, setIsLoad] = useState(true)
-
-    useImperativeHandle(cRef, () => ({
-        _onRefresh
-    }))
 
     useEffect(() => {
         ;(async () => {
@@ -44,9 +32,10 @@ const ListBase: FC<Props> = ({
     const _getData = async ({pageNum}: { pageNum: number }) => {
         const res = await Request({page: pageNum})
         setPage(pageNum + 1)
+
+        console.log(res.data)
         if (pageNum === 1) setData([...res.data])
         else setData([...data, ...res.data])
-
         if (res.data.length < 8) setIsLoad(false)
 
     }
@@ -68,12 +57,61 @@ const ListBase: FC<Props> = ({
         setShowTips(false)
     }
 
+
+    return {
+        data, refreshing, showTips, isLoad, _onEndReached, _onRefresh, _close,
+    }
+
+}
+
+const ListBase: FC<Props> = ({
+    Request,
+    renderItem,
+    TipsColor = '#0084ff',
+    TipsTitle,
+    ListHeaderComponent,
+    cRef,
+    Refresh = true,
+}) => {
+    const {data, refreshing, showTips, isLoad, _onEndReached, _onRefresh, _close} = useList({Request})
+
+
+
+
+    useImperativeHandle(cRef, () => ({
+        _onRefresh
+    }))
+
+
+    const _refreshControl = () => {
+        return Refresh ? (
+            <RefreshControl
+                refreshing={refreshing}
+                onRefresh={_onRefresh}
+                colors={['#0084ff']}
+                enabled={true}
+            />
+        ) : undefined
+    }
+
+    const _ListFooterComponent = () => {
+        return isLoad ? (
+            <ItemWrapper style={{elevation: 1, paddingTop: 25, marginBottom: 10}}>
+                <Skeleton />
+            </ItemWrapper>
+        ) : null
+    }
+
+    const _keyExtractor = (item: any,index:number) => {
+        return index.toString()
+    }
+
+
     return (
         <Fragment>
-            {HeaderComponet && HeaderComponet()}
             <Wrapper>
                 {
-                    showTips && (
+                    Refresh && showTips && (
                         <FadeView
                             style={{
                                 width: '100%',
@@ -87,38 +125,24 @@ const ListBase: FC<Props> = ({
                             }}
                             close={_close}
                         >
-                            <Tips color={TipsColor}>{TipsTitle}</Tips>
+                            <Tips color={TipsColor!}>{TipsTitle}</Tips>
                         </FadeView>
                     )
                 }
                 <FlatList
+                    style={{flex: 1}}
                     data={data}
                     showsVerticalScrollIndicator={false}
-                    initialNumToRender={5}
-                    onEndReachedThreshold={0.1}
+                    initialNumToRender={8}
+                    maxToRenderPerBatch={10}
+                    onEndReachedThreshold={0.2}
                     ListHeaderComponent={ListHeaderComponent}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={refreshing}
-                            onRefresh={_onRefresh}
-                            colors={['#0084ff']}
-                            enabled={true}
-                        />
-                    }
-                    ListFooterComponent={
-                        <Fragment>
-                            {
-                                isLoad && (
-                                    <ItemWrapper style={{elevation: 1, paddingTop: 25, marginBottom: 10}}>
-                                        <Skeleton />
-                                    </ItemWrapper>
-                                )
-                            }
-                        </Fragment>
-                    }
+                    refreshControl={_refreshControl()}
+                    ListFooterComponent={_ListFooterComponent}
                     onEndReached={_onEndReached}
                     renderItem={renderItem}
-                    keyExtractor={(item: any) => item._id}
+                    keyExtractor={_keyExtractor}
+                    removeClippedSubviews={false}
                 />
             </Wrapper>
         </Fragment>
@@ -127,10 +151,11 @@ const ListBase: FC<Props> = ({
 
 const Wrapper = styled.View`
 position: relative;
+flex: 1;
 `
 const Tips = styled.Text`
 text-align:center;
-color: ${props => props.color};
+color: ${(props: { color: string }) => props.color};
 `
 export const ItemWrapper = styled.View`
 background-color: #fff;
@@ -146,4 +171,5 @@ margin-left: 5px;
 `
 
 
-export default ListBase
+export { useList }
+export default React.memo(ListBase)

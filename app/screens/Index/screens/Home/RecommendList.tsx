@@ -2,7 +2,7 @@ import React, { FC ,useCallback} from 'react'
 import { TouchableNativeFeedback, View } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import styled from 'styled-components/native'
-import ListBase, { ItemWrapper,Image } from './ListBase'
+import ListBase, { ItemWrapper,Image } from '../../../../components/ListBase'
 import { QuestionRequest } from '../../../../utils/request'
 import IconGengduo from '../../../../components/iconfont/IconGengduo'
 
@@ -10,7 +10,6 @@ import IconGengduo from '../../../../components/iconfont/IconGengduo'
 const RecommendList: FC = () => {
 
     const navigation = useNavigation()
-
 
     const Request = useCallback(({page}: { page: number }) => {
         return QuestionRequest.RecommendListData({page})

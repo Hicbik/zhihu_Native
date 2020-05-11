@@ -1384,6 +1384,11 @@
   resolved "https://registry.npm.taobao.org/@react-native-community/viewpager/download/@react-native-community/viewpager-1.1.7.tgz#7d3b1631f1ec91145db92a8e25c80d53027e96ba"
   integrity sha1-fTsWMfHskRRduSqOJcgNUwJ+lro=
 
+"@react-native-community/viewpager@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.npm.taobao.org/@react-native-community/viewpager/download/@react-native-community/viewpager-4.0.0.tgz#bae6fc2d0689c85488a1f413ecf19e39b3b7e1d9"
+  integrity sha1-uub8LQaJyFSIofQT7PGeObO34dk=
+
 "@react-navigation/core@^5.4.0":
   version "5.4.0"
   resolved "https://registry.npm.taobao.org/@react-navigation/core/download/@react-navigation/core-5.4.0.tgz#6b4973d48396d28ed3efee582b28807682a5865d"
@@ -1401,10 +1406,10 @@
   resolved "https://registry.npm.taobao.org/@react-navigation/material-bottom-tabs/download/@react-navigation/material-bottom-tabs-5.1.14.tgz#063ea4134c6319686586e8e220859d05f688de8d"
   integrity sha1-Bj6kE0xjGWhlhujiIIWdBfaI3o0=
 
-"@react-navigation/material-top-tabs@^5.1.14":
-  version "5.1.14"
-  resolved "https://registry.npm.taobao.org/@react-navigation/material-top-tabs/download/@react-navigation/material-top-tabs-5.1.14.tgz#cb4993b7db70dc9f7028d0e71255ef98dc07f22a"
-  integrity sha1-y0mTt9tw3J9wKNDnElXvmNwH8io=
+"@react-navigation/material-top-tabs@^5.2.2":
+  version "5.2.2"
+  resolved "https://registry.npm.taobao.org/@react-navigation/material-top-tabs/download/@react-navigation/material-top-tabs-5.2.2.tgz#9373fc624a0037ebeb2df6fd5c6d39b7b7768e7c"
+  integrity sha1-k3P8YkoAN+vrLfb9XG05t7d2jnw=
   dependencies:
     color "^3.1.2"
 
@@ -2031,6 +2036,11 @@ babel-plugin-syntax-trailing-function-commas@^7.0.0-beta.0:
   version "7.0.0-beta.0"
   resolved "https://registry.npm.taobao.org/babel-plugin-syntax-trailing-function-commas/download/babel-plugin-syntax-trailing-function-commas-7.0.0-beta.0.tgz#aa213c1435e2bffeb6fca842287ef534ad05d5cf"
   integrity sha1-qiE8FDXiv/62/KhCKH71NK0F1c8=
+
+babel-plugin-transform-remove-console@^6.9.4:
+  version "6.9.4"
+  resolved "https://registry.npm.taobao.org/babel-plugin-transform-remove-console/download/babel-plugin-transform-remove-console-6.9.4.tgz#b980360c067384e24b357a588d807d3c83527780"
+  integrity sha1-uYA2DAZzhOJLNXpYjYB9PINSd4A=
 
 babel-preset-fbjs@^3.2.0, babel-preset-fbjs@^3.3.0:
   version "3.3.0"
@@ -2667,7 +2677,7 @@ data-urls@^1.0.0:
     whatwg-mimetype "^2.2.0"
     whatwg-url "^7.0.0"
 
-dayjs@^1.8.15:
+dayjs@^1.8.15, dayjs@^1.8.26:
   version "1.8.26"
   resolved "https://registry.npm.taobao.org/dayjs/download/dayjs-1.8.26.tgz#c6d62ccdf058ca72a8d14bb93a23501058db9f1e"
   integrity sha1-xtYszfBYynKo0Uu5OiNQEFjbnx4=

@@ -50,6 +50,11 @@ export class UserRequest {
         return axios.get(this.url + 'people', {params: {_id}})
     }
 
+    static getDynamicApp ({user_id, page}: { user_id: string, page: number }) {
+        return axios.get(this.url + 'getDynamicApp', {params: {user_id, page}})
+    }
+
+
 }
 
 
@@ -59,6 +64,10 @@ export class QuestionRequest {
 
     static RecommendListData ({page}: { page: number }) {
         return axios.get(this.url + 'RecommendListData', {params: {page}})
+    }
+
+    static PeopleReply ({_id, page}: { _id: string, page: number }) {
+        return axios.get(this.url + 'PeopleReply', {params: {_id, page}})
     }
 
 

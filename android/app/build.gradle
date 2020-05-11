@@ -150,6 +150,12 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            storeFile file('forever.keystore')
+            storePassword '1959453433'
+            keyAlias 'forever'
+            keyPassword '1959453433'
+        }
     }
     buildTypes {
         debug {
@@ -161,6 +167,7 @@ android {
             signingConfig signingConfigs.debug
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            signingConfig signingConfigs.release
         }
     }
 

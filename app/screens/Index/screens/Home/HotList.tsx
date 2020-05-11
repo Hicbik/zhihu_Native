@@ -2,7 +2,7 @@ import React, { FC, useCallback, useState, useRef } from 'react'
 import { TouchableNativeFeedback, View, ScrollView } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import styled from 'styled-components/native'
-import ListBase, { ItemWrapper as ItemWrapperBase, Image } from './ListBase'
+import ListBase, { ItemWrapper as ItemWrapperBase, Image } from '../../../../components/ListBase'
 import { QuestionRequest } from '../../../../utils/request'
 import { BlurView } from '@react-native-community/blur'
 
@@ -47,7 +47,7 @@ const HotList: FC = () => {
         ListRef.current._onRefresh()
     }
 
-    const _headerComponet = () => {
+    const _headerComponent = () => {
         return (
             <HeaderWrapper>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} style={{padding: 10}}>
@@ -75,16 +75,16 @@ const HotList: FC = () => {
     }
 
     return (
-
-
-        <ListBase
-            renderItem={_renderItem}
-            Request={Request}
-            TipsColor='#f9970e'
-            TipsTitle='热榜已更新'
-            HeaderComponet={_headerComponet}
-            cRef={ListRef}
-        />
+        <>
+            {_headerComponent()}
+            <ListBase
+                renderItem={_renderItem}
+                Request={Request}
+                TipsColor='#f9970e'
+                TipsTitle='热榜已更新'
+                cRef={ListRef}
+            />
+        </>
     )
 }
 
@@ -97,7 +97,7 @@ position: relative;
 
 const Tag = styled.Text`
 background-color: ${props => props.active ? '#ebf5ff' : '#f6f6f6'};
-color: ${props => props.active ? '#0084ff' : '#808080'};
+color: ${(props: { active: boolean }) => props.active ? '#0084ff' : '#808080'};
 padding:7px 15px;
 border-radius: 5px;
 `
@@ -116,10 +116,10 @@ padding: 15px 0;
 `
 
 const IndexText = styled.Text`
-color: ${props => props.index < 3 ? '#fff' : '#999'};
+color: ${(props: { index: number }) => props.index < 3 ? '#fff' : '#999'};
 margin-right: 15px;
 font-size: 16px;
-background-color: ${props => props.index < 3 ? ['#ef4744', '#ff8604', '#f1b96e'][props.index] : '#fff'};
+background-color: ${(props: { index: number }) => props.index < 3 ? ['#ef4744', '#ff8604', '#f1b96e'][props.index] : '#fff'};
 width: 20px;
 text-align:center;
 border-radius: 4px;

@@ -5,18 +5,18 @@ import { useRoute, useFocusEffect } from '@react-navigation/native'
 
 const Question: FC = () => {
 
+    const params = useRoute<any>().params
 
     useFocusEffect(() => {
         StatusBar.setBackgroundColor('#fff')
         return () => StatusBar.setBackgroundColor('#ebeff2')
     })
 
-    const route = useRoute<any>()
 
     return (
         <View>
             <Text>question deal page</Text>
-            <Text>{route.params._id}</Text>
+            <Text>{params._id}</Text>
         </View>
     )
 }

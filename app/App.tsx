@@ -14,8 +14,12 @@ import Question from './screens/Question'
 import Search from './screens/Search'
 import SignIn from './screens/SignIn'
 import People from './screens/People'
+import PeopleDeal from './screens/PeopleDeal'
 
 const Stack = createStackNavigator()
+
+
+
 
 const App: FC = () => {
 
@@ -77,6 +81,10 @@ const App: FC = () => {
 
                             />
 
+                            <Stack.Screen
+                                name='PeopleDeal'
+                                component={PeopleDeal}
+                            />
 
                         </Stack.Navigator>
 

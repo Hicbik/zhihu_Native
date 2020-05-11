@@ -11,7 +11,7 @@ interface Props {
 
 const Header: FC<Props> = ({data}) => {
     return (
-        <Wrapper>
+        <Wrapper >
             <Box>
                 <TopWrapper>
                     <AvatarWrapper>
@@ -56,7 +56,7 @@ background-color: #fff;
 border-top-left-radius: 10px;
 border-top-right-radius: 10px;
 position: relative;
-padding: 45px 15px 10px;
+padding: 45px 15px 0;
 `
 const TopWrapper = styled.View`
 position: absolute;
@@ -83,7 +83,7 @@ margin-top: 10px;
 const RowView = styled.View`
 flex-direction: row;
 border-bottom-width: 1px;
-border-bottom-color: #ebebeb;
+border-bottom-color: #f6f6f6;
 padding: 15px 0;
 `
 
