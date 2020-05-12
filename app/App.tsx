@@ -40,7 +40,11 @@ const App: FC = () => {
                     <SafeAreaView style={{flex: 1, backgroundColor: '#f6f6f6'}}>
 
                         <Stack.Navigator
-                            screenOptions={{cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS}}
+                            screenOptions={{
+                                cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
+                                headerTintColor:'#646464'
+                            }}
+
                         >
 
                             <Stack.Screen
@@ -76,7 +80,8 @@ const App: FC = () => {
                                 component={People}
                                 options={{
                                     headerStyle: {backgroundColor: '#b8c0d7', elevation: 0},
-                                    title:''
+                                    title:'',
+                                    headerTintColor:'#fff'
                                 }}
 
                             />

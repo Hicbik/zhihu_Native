@@ -5,6 +5,7 @@ import styled from 'styled-components/native'
 import ListBase, { ItemWrapper as ItemWrapperBase, Image } from '../../../../components/ListBase'
 import { QuestionRequest } from '../../../../utils/request'
 import { BlurView } from '@react-native-community/blur'
+import QuestionTitle from '../../../../components/QuestionTitle'
 
 
 const HotList: FC = () => {
@@ -31,7 +32,9 @@ const HotList: FC = () => {
                             <IndexText index={index}>{index + 1}</IndexText>
                         </View>
                         <View style={{flex: 1}}>
-                            <Title>{item.question_id.title}</Title>
+                            <QuestionTitle style={{marginBottom: 0, fontWeight: 'bold'}}>
+                                {item.question_id.title}
+                            </QuestionTitle>
                             <TipsText>213热度</TipsText>
                         </View>
                         {!!item.image_field.length && <Image source={{uri: item.image_field[0]}} />}
@@ -58,7 +61,8 @@ const HotList: FC = () => {
                                     active={index === tagActive}
                                     onPress={handleActive(index)}
                                     style={{marginRight: index === tag.length - 1 ? 50 : 10}}
-                                >{value}
+                                >
+                                    {value}
                                 </Tag>
                             )
                         )
@@ -119,17 +123,12 @@ const IndexText = styled.Text`
 color: ${(props: { index: number }) => props.index < 3 ? '#fff' : '#999'};
 margin-right: 15px;
 font-size: 16px;
-background-color: ${(props: { index: number }) => props.index < 3 ? ['#ef4744', '#ff8604', '#f1b96e'][props.index] : '#fff'};
+background-color: ${(props: { index: number }) => props.index < 3 ? ['#ef4744', '#ff8604', '#f1b96e'][props.index] : 'transparent'};
 width: 20px;
 text-align:center;
 border-radius: 4px;
 `
 
-const Title = styled.Text`
-font-size: 16px;
-font-weight:bold;
-color: #1a1a1a;
-`
 
 const TipsText = styled.Text`
 color: #999;

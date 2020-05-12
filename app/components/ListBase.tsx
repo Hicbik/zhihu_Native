@@ -33,7 +33,6 @@ const useList = ({Request}: { Request: ({page}: { page: number }) => any }) => {
         const res = await Request({page: pageNum})
         setPage(pageNum + 1)
 
-        console.log(res.data)
         if (pageNum === 1) setData([...res.data])
         else setData([...data, ...res.data])
         if (res.data.length < 8) setIsLoad(false)
@@ -76,8 +75,6 @@ const ListBase: FC<Props> = ({
     const {data, refreshing, showTips, isLoad, _onEndReached, _onRefresh, _close} = useList({Request})
 
 
-
-
     useImperativeHandle(cRef, () => ({
         _onRefresh
     }))
@@ -95,14 +92,20 @@ const ListBase: FC<Props> = ({
     }
 
     const _ListFooterComponent = () => {
-        return isLoad ? (
-            <ItemWrapper style={{elevation: 1, paddingTop: 25, marginBottom: 10}}>
-                <Skeleton />
-            </ItemWrapper>
-        ) : null
+        if (isLoad && !!data.length) {
+            return (
+                <ItemWrapper style={{elevation: 1, paddingTop: 25, marginBottom: 10}}>
+                    <Skeleton />
+                </ItemWrapper>
+            )
+        }
+        if (!isLoad) {
+            return <EndText>没有更多内容</EndText>
+        }
+        return null
     }
 
-    const _keyExtractor = (item: any,index:number) => {
+    const _keyExtractor = (item: any, index: number) => {
         return index.toString()
     }
 
@@ -157,6 +160,14 @@ const Tips = styled.Text`
 text-align:center;
 color: ${(props: { color: string }) => props.color};
 `
+
+const EndText = styled.Text`
+color: #bfbfbf;
+text-align:center;
+margin: 20px 0;
+font-weight:bold;
+`
+
 export const ItemWrapper = styled.View`
 background-color: #fff;
 margin-top: 10px;

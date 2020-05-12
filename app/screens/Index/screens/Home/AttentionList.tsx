@@ -8,6 +8,8 @@ import IconGengduo from '../../../../components/iconfont/IconGengduo'
 import IconXiangshangsanjiaoxing from '../../../../components/iconfont/IconXiangshangsanjiaoxing'
 import IconPinglun from '../../../../components/iconfont/IconPinglun'
 import AvararPeople from '../../../../components/AvararPeople'
+import QuestionTitle from '../../../../components/QuestionTitle'
+import ReplyContent from '../../../../components/ReplyContent'
 
 
 const AttentionList: FC = () => {
@@ -33,12 +35,13 @@ const AttentionList: FC = () => {
                                 avatar='https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2181214712,1935140688&fm=26&gp=0.jpg'
                                 nickname='阿库娅'
                                 text='3分钟前·赞同了回答'
+                                style={{marginBottom:10}}
                             />
-                            <Title>宇宙的终极秘密有没有可能被人类知晓？</Title>
+                            <QuestionTitle>宇宙的终极秘密有没有可能被人类知晓？</QuestionTitle>
                             <ContentWrapper>
-                                <Content ellipsizeMode='tail' numberOfLines={3}>
+                                <ReplyContent numberOfLines={3} style={{flex: 1}}>
                                     朝闻道夕死可矣，人类知晓的那一刻，
-                                </Content>
+                                </ReplyContent>
                                 <Image
                                     source={{uri: 'https://pic4.zhimg.com/50/v2-43ecd9604db459d8cd3a4fcf39fbc6eb_400x224.jpg'}}
                                 />
@@ -120,23 +123,9 @@ font-size: 12px;
 text-align:center;
 `
 
-const Title = styled.Text`
-font-size: 16px;
-color: #1a1a1a;
-margin-bottom: 5px;
-`
-
 const ContentWrapper = styled.View`
 flex-direction: row;
 margin-bottom: 10px;
-`
-
-
-const Content = styled.Text`
-color: #444;
-font-size: 14px;
-margin-bottom: 5px;
-flex: 1;
 `
 
 const TipsWrapper = styled.View`

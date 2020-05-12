@@ -5,10 +5,11 @@ import styled from 'styled-components/native'
 import IconArrowRight from '../../components/iconfont/IconArrowRight'
 
 interface Props {
-    data: any
+    data: any,
+    isMy:boolean
 }
 
-const PeopleTab: FC<Props> = ({data}) => {
+const PeopleTab: FC<Props> = ({data,isMy}) => {
 
     const navigation = useNavigation()
 
@@ -20,7 +21,7 @@ const PeopleTab: FC<Props> = ({data}) => {
         <Wrapper>
             <TouchableNativeFeedback onPress={LinkTo({title: '的动态', type: '动态'})}>
                 <ItemWrapper>
-                    <Text>ta的动态</Text>
+                    <Text>{isMy ? '我' : 'Ta'}的动态</Text>
                     <View>
                         <IconArrowRight />
                     </View>
@@ -28,7 +29,7 @@ const PeopleTab: FC<Props> = ({data}) => {
             </TouchableNativeFeedback>
             <TouchableNativeFeedback onPress={LinkTo({title: '的回答', type: '回答'})}>
                 <ItemWrapper>
-                    <Text>ta的回答</Text>
+                    <Text>{isMy ? '我' : 'Ta'}的回答</Text>
                     <View>
                         <IconArrowRight />
                     </View>
@@ -36,7 +37,7 @@ const PeopleTab: FC<Props> = ({data}) => {
             </TouchableNativeFeedback>
             <TouchableNativeFeedback onPress={LinkTo({title: '的提问', type: '提问'})}>
                 <ItemWrapper>
-                    <Text>ta的提问</Text>
+                    <Text>{isMy ? '我' : 'Ta'}的提问</Text>
                     <View>
                         <IconArrowRight />
                     </View>
@@ -44,7 +45,7 @@ const PeopleTab: FC<Props> = ({data}) => {
             </TouchableNativeFeedback>
             <TouchableNativeFeedback onPress={LinkTo({title: '关注的人', type: '关注'})}>
                 <ItemWrapper>
-                    <Text>ta关注的人</Text>
+                    <Text>{isMy ? '我' : 'Ta'}关注的人</Text>
                     <View>
                         <IconArrowRight />
                     </View>
@@ -52,7 +53,7 @@ const PeopleTab: FC<Props> = ({data}) => {
             </TouchableNativeFeedback>
             <TouchableNativeFeedback onPress={LinkTo({title: '的粉丝', type: '粉丝'})}>
                 <ItemWrapper>
-                    <Text>ta的粉丝</Text>
+                    <Text>{isMy ? '我' : 'Ta'}的粉丝</Text>
                     <View>
                         <IconArrowRight />
                     </View>

@@ -3,25 +3,25 @@ import { View } from 'react-native'
 import styled from 'styled-components/native'
 
 interface Props {
-    avatar:string,
-    nickname:string,
-    text:string
+    avatar: string,
+    nickname: string,
+    text?: string,
+    style?: any
 }
 
-const AvararPeople: FC<Props> = ({avatar,nickname,text}) => {
+const AvararPeople: FC<Props> = ({avatar, nickname, text, style}) => {
     return (
-        <Wrapper>
+        <Wrapper style={style}>
             <Avatar source={{uri: avatar}} />
             <View style={{justifyContent: 'center'}}>
                 <AuthorText>{nickname}</AuthorText>
-                <AuthorText style={{color: '#b0b0b0', fontSize: 12}}>{text}</AuthorText>
+                {text && <AuthorText style={{color: '#b0b0b0', fontSize: 12}}>{text}</AuthorText>}
             </View>
         </Wrapper>
     )
 }
 
 const Wrapper = styled.View`
-margin-bottom: 10px;
 flex-direction: row;
 `
 

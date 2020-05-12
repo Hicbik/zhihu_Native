@@ -54,6 +54,18 @@ export class UserRequest {
         return axios.get(this.url + 'getDynamicApp', {params: {user_id, page}})
     }
 
+    static getAttentionPeople ({_id, page}: { _id: string, page: number }) {
+        return axios.get(this.url + 'getAttentionPeople', {params: {_id, page}})
+    }
+
+    static getFansPeople ({_id, page}: { _id: string, page: number }) {
+        return axios.get(this.url + 'getFansPeople', {params: {_id, page}})
+    }
+
+    static attention ({_id, type}: { _id: string, type: string }) {
+        return axios.get(this.url + 'attention', {params: {_id, type}})
+    }
+
 
 }
 
@@ -68,6 +80,10 @@ export class QuestionRequest {
 
     static PeopleReply ({_id, page}: { _id: string, page: number }) {
         return axios.get(this.url + 'PeopleReply', {params: {_id, page}})
+    }
+
+    static PeopleQuestion ({_id, page}: { _id: string, page: number }) {
+        return axios.get(this.url + 'PeopleQuestion', {params: {_id, page}})
     }
 
 
