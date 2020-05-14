@@ -4,10 +4,8 @@
   "private": true,
   "scripts": {
     "android": "react-native run-android",
-    "ios": "react-native run-ios",
     "start": "react-native start",
-    "test": "jest",
-    "lint": "eslint ."
+    "test": "jest"
   },
   "dependencies": {
     "@ant-design/react-native": "^3.3.0",
@@ -26,8 +24,10 @@
     "dayjs": "^1.8.26",
     "react": "16.11.0",
     "react-native": "0.62.2",
+    "react-native-autoheight-webview": "^1.5.1",
     "react-native-bootsplash": "^2.2.4",
     "react-native-gesture-handler": "^1.6.1",
+    "react-native-htmlview": "^0.15.0",
     "react-native-linear-gradient": "^2.5.6",
     "react-native-paper": "^3.9.0",
     "react-native-reanimated": "^1.8.0",
@@ -36,6 +36,7 @@
     "react-native-svg": "^12.1.0",
     "react-native-tab-view": "^2.14.0",
     "react-native-vector-icons": "^6.6.0",
+    "react-native-webview": "^9.4.0",
     "react-redux": "^7.2.0",
     "redux": "^4.0.5",
     "rn-placeholder": "^3.0.0",

@@ -4,6 +4,8 @@
 import React, { FunctionComponent } from 'react';
 import { ViewProps } from 'react-native';
 import { GProps } from 'react-native-svg';
+import IconDianzan11Copy from './IconDianzan11Copy';
+import IconXiayige from './IconXiayige';
 import IconNv from './IconNv';
 import IconTubiaozhizuomoban from './IconTubiaozhizuomoban';
 import IconJiahao1 from './IconJiahao1';
@@ -27,7 +29,7 @@ import IconTongzhi from './IconTongzhi';
 import IconFaxian from './IconFaxian';
 import IconWenzhang from './IconWenzhang';
 
-export type IconNames = 'nv' | 'tubiaozhizuomoban' | 'jiahao1' | 'sanjiaoxing' | 'shezhi' | 'arrow-right' | 'arrow-lift' | 'arrow-up' | 'close' | 'arrow-down' | 'xiangshangsanjiaoxing' | 'xiangxiasanjiaoxing' | 'pinglun' | 'sousuo' | 'jiahao' | '-' | 'zhibo' | 'gengduo' | 'huabanfuben' | 'tongzhi' | 'faxian' | 'wenzhang';
+export type IconNames = 'dianzan11-copy' | 'xiayige' | 'nv' | 'tubiaozhizuomoban' | 'jiahao1' | 'sanjiaoxing' | 'shezhi' | 'arrow-right' | 'arrow-lift' | 'arrow-up' | 'close' | 'arrow-down' | 'xiangshangsanjiaoxing' | 'xiangxiasanjiaoxing' | 'pinglun' | 'sousuo' | 'jiahao' | '-' | 'zhibo' | 'gengduo' | 'huabanfuben' | 'tongzhi' | 'faxian' | 'wenzhang';
 
 interface Props extends GProps, ViewProps {
   name: IconNames;
@@ -37,6 +39,10 @@ interface Props extends GProps, ViewProps {
 
 const IconFont: FunctionComponent<Props> = ({ name, ...rest }) => {
   switch (name) {
+    case 'dianzan11-copy':
+      return <IconDianzan11Copy {...rest} />;
+    case 'xiayige':
+      return <IconXiayige {...rest} />;
     case 'nv':
       return <IconNv {...rest} />;
     case 'tubiaozhizuomoban':

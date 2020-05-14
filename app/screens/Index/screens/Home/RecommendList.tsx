@@ -23,7 +23,7 @@ const RecommendList: FC = () => {
 
     const _renderItem = ({item}: { item: any }) => {
         return (
-            <TouchableNativeFeedback onPress={LinkTo(item._id)}>
+            <TouchableNativeFeedback onPress={LinkTo(item.question_id._id)}>
                 <ItemWrapper style={{elevation: 1}}>
                     <QuestionTitle style={{fontWeight: 'bold', marginBottom: 0}}>
                         {item.question_id.title}

@@ -86,6 +86,9 @@ export class QuestionRequest {
         return axios.get(this.url + 'PeopleQuestion', {params: {_id, page}})
     }
 
+    static getReply ({question_id, reply_id}: { question_id: string | undefined, reply_id?: string }) {
+        return axios.get(this.url + 'getReply', {params: {question_id, reply_id}})
+    }
 
 }
 

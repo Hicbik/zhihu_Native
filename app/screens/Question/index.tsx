@@ -1,22 +1,19 @@
 import React, { FC } from 'react'
-import { View, Text, StatusBar } from 'react-native'
-import { useRoute, useFocusEffect } from '@react-navigation/native'
+import { useRoute } from '@react-navigation/native'
+import Reply from './Reply'
+import { useTypedSelector } from '../../store/reducer'
+import { View } from 'react-native'
 
 
 const Question: FC = () => {
 
+
     const params = useRoute<any>().params
-
-    useFocusEffect(() => {
-        StatusBar.setBackgroundColor('#fff')
-        return () => StatusBar.setBackgroundColor('#ebeff2')
-    })
-
+    const state = useTypedSelector(state => state.User)
 
     return (
-        <View>
-            <Text>question deal page</Text>
-            <Text>{params._id}</Text>
+        <View style={{flex: 1, backgroundColor: '#fff'}}>
+            <Reply question_id={params._id} state={state} />
         </View>
     )
 }

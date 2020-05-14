@@ -41,6 +41,8 @@ const AttentionButton: FC<Props> = ({user_id, fans, people_id}) => {
         }
     }
 
+    if (user_id === people_id) return null
+
     return (
         <TouchableNativeFeedback style={{borderRadius: 4}} onPress={_onPress} disabled={loading}>
 

@@ -19,8 +19,6 @@ import PeopleDeal from './screens/PeopleDeal'
 const Stack = createStackNavigator()
 
 
-
-
 const App: FC = () => {
 
     useEffect(() => {
