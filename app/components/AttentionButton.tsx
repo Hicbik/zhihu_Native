@@ -7,11 +7,15 @@ import { UserRequest } from '../utils/request'
 interface Props {
     user_id: string,
     people_id: string,
-    fans: string[]
+    fans: string[],
 }
 
 
-const AttentionButton: FC<Props> = ({user_id, fans, people_id}) => {
+const AttentionButton: FC<Props> = ({
+    user_id,
+    fans,
+    people_id,
+}) => {
 
     const [state, setState] = useState(() => fans.includes(user_id))
     const [loading, setLoading] = useState(false)
@@ -45,11 +49,11 @@ const AttentionButton: FC<Props> = ({user_id, fans, people_id}) => {
 
     return (
         <TouchableNativeFeedback style={{borderRadius: 4}} onPress={_onPress} disabled={loading}>
-
-
             {
                 loading ? (
-                    <Wrapper><ActivityIndicator /></Wrapper>
+                    <Wrapper>
+                        <ActivityIndicator />
+                    </Wrapper>
                 ) : (
                     state ? (
                         <StateWrapper>
@@ -63,17 +67,18 @@ const AttentionButton: FC<Props> = ({user_id, fans, people_id}) => {
                     )
                 )
             }
-
         </TouchableNativeFeedback>
     )
 }
+
+
 
 const Wrapper = styled.View`
 padding: 6px 0;
 width: 65px;
 border-radius: 4px;
 border-width: 1px;
-border-color: #0084ff;
+border-color:  #0084ff;
 flex-direction: row;
 justify-content: center;
 align-items: center;
@@ -84,7 +89,6 @@ color: #0084ff;
 font-size: 12px;
 margin-left: 5px;
 `
-
 
 const StateWrapper = styled(Wrapper)`
 background-color: #ebebeb;

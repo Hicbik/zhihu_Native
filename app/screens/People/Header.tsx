@@ -37,7 +37,7 @@ const Header: FC<Props> = ({data, isMy}) => {
                         <Text style={{color: '#999', fontSize: 14}}> 关注{isMy ? '我' : 'Ta'}的人</Text>
                     </Text>
                     <Text style={{color: '#0084ff', fontSize: 18, marginLeft: 20}}>
-                        {data.fans_count}
+                        {data.attention_count}
                         <Text style={{color: '#999', fontSize: 14}}> {isMy ? '我' : 'Ta'}关注的人</Text>
                     </Text>
                 </RowView>

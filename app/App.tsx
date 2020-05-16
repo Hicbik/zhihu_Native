@@ -54,6 +54,9 @@ const App: FC = () => {
                             <Stack.Screen
                                 name='Question'
                                 component={Question}
+                                options={{
+                                    cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS
+                                }}
                             />
 
                             <Stack.Screen

@@ -1,70 +1,51 @@
-import React, { FC, useEffect, useState } from 'react'
-import { ScrollView } from 'react-native'
+import React, { FC, useEffect, useRef } from 'react'
+import { Dimensions, ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 import AutoHeightWebView from 'react-native-autoheight-webview'
-import { QuestionRequest } from '../../utils/request'
 import AvararPeople from '../../components/AvararPeople'
 import AttentionButton from '../../components/AttentionButton'
 import Comment from './Comment'
 import html from '../../utils/replyhtml'
 import { DiffTime } from '../../utils/time'
 import { BlurView } from '@react-native-community/blur'
+import Loading from './Loading'
 
 interface Props {
-    question_id: string,
-    state: any
+    state: any,
+    replyData: any,
+    nextReplyData: any,
 }
 
-const Reply: FC<Props> = ({question_id, state}) => {
-    const [data, setData] = useState<any>({})
+
+const screenHeight = Math.round(Dimensions.get('window').height)
+
+
+const Reply: FC<Props> = ({state, replyData, nextReplyData}) => {
+    const ref = useRef<any>()
 
     useEffect(() => {
-        ;(async () => {
-            const res = await QuestionRequest.getReply({question_id})
-            setData({...res.data[0]})
-        })()
-    }, [question_id])
+        ref.current.scrollTo({x: 0, y: 0, animated: true})
+    }, [replyData])
 
-
-    const _onScrollBeginDrag = () => {
-        console.log(1)
-    }
-
-    if (!data._id) return null
-
-    return (
-        <ScrollView style={{flex: 1}} onScrollBeginDrag={_onScrollBeginDrag}>
-            <Wrapper>
-                <Top>
-                    <AvararPeople
-                        avatar={data.user_id.avatar}
-                        nickname={data.user_id.nickname}
-                        text={!!data.user_id.one_sentence_introduction.length && data.user_id.one_sentence_introduction}
-                    />
-                    <AttentionButton user_id={state._id} people_id={data.user_id._id} fans={data.user_id.fans} />
-                </Top>
-                <AutoHeightWebView
-                    source={{
-                        html: html(data.content_html, `发布于${DiffTime(data.create_time)}·著作权归作者所有`),
-                        baseUrl: 'file:///android_asset/web/'
-                    }}
-                    scalesPageToFit={false}
-                    style={{flex: 1}}
-                />
-            </Wrapper>
-            <Comment state={state} />
+    const NextReply = () => {
+        if (!nextReplyData) return null
+        return (
             <NextWrapper>
                 <Top>
                     <AvararPeople
-                        avatar={data.user_id.avatar}
-                        nickname={data.user_id.nickname}
-                        text={!!data.user_id.one_sentence_introduction.length && data.user_id.one_sentence_introduction}
+                        avatar={nextReplyData.user_id.avatar}
+                        nickname={nextReplyData.user_id.nickname}
+                        text={!!nextReplyData.user_id.one_sentence_introduction.length && nextReplyData.user_id.one_sentence_introduction}
                     />
-                    <AttentionButton user_id={state._id} people_id={data.user_id._id} fans={data.user_id.fans} />
+                    <AttentionButton
+                        user_id={state._id}
+                        people_id={nextReplyData.user_id._id}
+                        fans={nextReplyData.user_id.fans}
+                    />
                 </Top>
                 <AutoHeightWebView
                     source={{
-                        html: html(data.content_html, ``),
+                        html: html(nextReplyData.content_html, ``),
                         baseUrl: 'file:///android_asset/web/'
                     }}
                     scalesPageToFit={false}
@@ -73,12 +54,45 @@ const Reply: FC<Props> = ({question_id, state}) => {
                 <BlurView
                     style={{position: 'absolute', bottom: 0, right: 0, width: '100%', height: 25, opacity: 0.9}}
                     blurType="light"
-                    blurAmount={10}
+                    blurAmount={8}
                     reducedTransparencyFallbackColor="white"
                 />
             </NextWrapper>
-        </ScrollView>
+        )
+    }
 
+    return (
+        <ScrollView style={{flex: 1}} ref={ref}>
+            {!replyData && <Loading />}
+            {
+                replyData && (
+                    <Wrapper>
+                        <Top>
+                            <AvararPeople
+                                avatar={replyData.user_id.avatar}
+                                nickname={replyData.user_id.nickname}
+                                text={!!replyData.user_id.one_sentence_introduction.length && replyData.user_id.one_sentence_introduction}
+                            />
+                            <AttentionButton
+                                user_id={state._id}
+                                people_id={replyData.user_id._id}
+                                fans={replyData.user_id.fans}
+                            />
+                        </Top>
+                        <AutoHeightWebView
+                            source={{
+                                html: html(replyData.content_html, `发布于${DiffTime(replyData.create_time)}·著作权归作者所有`),
+                                baseUrl: 'file:///android_asset/web/'
+                            }}
+                            scalesPageToFit={false}
+                            style={{flex: 1}}
+                        />
+                        <Comment state={state} reply_id={replyData._id} comment_count={replyData.comment_count} />
+                    </Wrapper>
+                )
+            }
+            <NextReply />
+        </ScrollView>
     )
 }
 
@@ -86,7 +100,7 @@ const Reply: FC<Props> = ({question_id, state}) => {
 const Wrapper = styled.View`
 padding: 15px 0;
 flex: 1;
-min-height: 500px;
+min-height: ${screenHeight}px;
 `
 
 const Top = styled.View`

@@ -25,7 +25,9 @@ const useList = ({Request}: { Request: ({page}: { page: number }) => any }) => {
 
     useEffect(() => {
         ;(async () => {
-            await _getData({pageNum: page})
+            setRefreshing(true)
+            await _getData({pageNum: 1})
+            setRefreshing(false)
         })()
     }, [])
 

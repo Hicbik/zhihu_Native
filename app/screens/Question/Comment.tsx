@@ -1,40 +1,46 @@
-import React, { FC } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import styled from 'styled-components/native'
 import IconDianzan11Copy from '../../components/iconfont/IconDianzan11Copy'
-
+import { CommentRequest } from '../../utils/request'
 
 interface Props {
-    state: any
+    state: any,
+    reply_id: string,
+    comment_count:number
 }
 
-const Comment: FC<Props> = ({state}) => {
+const Comment: FC<Props> = ({state, reply_id,comment_count}) => {
+
+    const [data, setData] = useState<any[]>([])
+
+    useEffect(() => {
+        ;(async () => {
+            const res = await CommentRequest.featuredComment({reply_id})
+            setData([...res.data])
+        })()
+    }, [reply_id])
+
     return (
         <Wrapper>
             <Title>评论</Title>
-            <ItemWrapper>
-                <View>
-                    <Avatar source={{uri: 'https://pic4.zhimg.com/aadd7b895_xs.jpg'}} />
-                    <Text>Ludis</Text>
-                    <View style={{marginLeft: 'auto'}}>
-                        <IconDianzan11Copy color='#999' size={14} style={{marginRight: 5}} />
-                        <Text>1</Text>
-                    </View>
-                </View>
-                <Content numberOfLines={2}>asd</Content>
-            </ItemWrapper>
-            <ItemWrapper>
-                <View>
-                    <Avatar source={{uri: 'https://pic4.zhimg.com/aadd7b895_xs.jpg'}} />
-                    <Text>Ludis</Text>
-                    <View style={{marginLeft: 'auto'}}>
-                        <IconDianzan11Copy color='#999' size={14} style={{marginRight: 5}} />
-                        <Text>1</Text>
-                    </View>
-                </View>
-                <Content numberOfLines={2}>asd</Content>
-            </ItemWrapper>
+            {
+                data.map(value => (
+                    <ItemWrapper key={value._id}>
+                        <View>
+                            <Avatar source={{uri: value.user_id.avatar}} />
+                            <Text>{value.user_id.nickname}</Text>
+                            <View style={{marginLeft: 'auto'}}>
+                                <IconDianzan11Copy color='#999' size={14} style={{marginRight: 5}} />
+                                <Text>{value.like_count}</Text>
+                            </View>
+                        </View>
+                        <Content numberOfLines={2}>{value.content}</Content>
+                    </ItemWrapper>
+                ))
+            }
+
             <Text style={{fontWeight: 'bold', fontSize: 16, marginLeft: 35, marginTop: 5, marginBottom: 15}}>
-                查看全部 25 条评论
+                查看全部 {comment_count} 条评论
             </Text>
             <View>
                 <Avatar source={{uri: state.avatar}} />

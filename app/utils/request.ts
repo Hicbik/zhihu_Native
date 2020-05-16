@@ -90,6 +90,20 @@ export class QuestionRequest {
         return axios.get(this.url + 'getReply', {params: {question_id, reply_id}})
     }
 
+    static getReplyNin ({question_id, reply_id, page}: { question_id: string, reply_id: string, page: number }) {
+        return axios.get(this.url + 'getReplyNin', {params: {question_id, reply_id, page}})
+    }
+
 }
 
 
+export class CommentRequest  {
+    static url = 'comment/'
+
+
+    static featuredComment ({reply_id}: { reply_id: string }) {
+        return axios.get(this.url + 'featuredComment', {params: {reply_id}})
+    }
+
+
+}
