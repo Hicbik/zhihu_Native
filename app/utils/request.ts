@@ -105,5 +105,8 @@ export class CommentRequest  {
         return axios.get(this.url + 'featuredComment', {params: {reply_id}})
     }
 
+    static findComment ({reply_id}: { reply_id: string }) {
+        return axios.get(this.url + 'findComment', {params: {reply_id}})
+    }
 
 }

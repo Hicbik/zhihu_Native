@@ -4,7 +4,7 @@ import { View } from 'react-native'
 
 const Loading: FC = () => {
     return (
-        <Placeholder Animation={Fade} style={{padding: 15}}>
+        <Placeholder Animation={Fade} style={{padding: 15}} >
             <View style={{marginBottom: 20, flexDirection: 'row'}}>
                 <PlaceholderMedia style={{borderRadius: 17.5, width: 35, height: 35}} />
                 <View style={{flex: 1, marginLeft: 12}}>

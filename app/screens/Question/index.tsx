@@ -1,11 +1,12 @@
 import React, { FC, useEffect, useState } from 'react'
 import { useRoute, useNavigation } from '@react-navigation/native'
+import { ToastAndroid, Animated, Modal } from 'react-native'
 import { useTypedSelector } from '../../store/reducer'
-import { ToastAndroid, Animated } from 'react-native'
 import { Header, Right } from './Header'
 import Reply from './Reply'
 import NextButton from './NextButton'
 import { QuestionRequest } from '../../utils/request'
+import CommentModal from './CommentModal'
 
 const Question: FC = () => {
 
@@ -15,8 +16,8 @@ const Question: FC = () => {
     const [replyList, setReplyList] = useState<any[]>([])
     const [index, setIndex] = useState(0)
     const [page, setPage] = useState(1)
+    const [visible, setVisible] = useState(false)
     const [y] = useState(new Animated.Value(0))
-
 
     useEffect(() => {
         ;(async () => {
@@ -39,7 +40,6 @@ const Question: FC = () => {
             return
         }
 
-
         setIndex(index + 1)
         Animated.timing(y, {useNativeDriver: true, toValue: 999, duration: 0}).start(() => {
             Animated.timing(y, {useNativeDriver: true, toValue: 0, duration: 250}).start()
@@ -49,20 +49,38 @@ const Question: FC = () => {
         if (index === (page - 1) * 6) {
             const res = await QuestionRequest.getReplyNin({question_id: params._id, reply_id: params.reply_id, page})
             setReplyList([...replyList, ...res.data])
-            setPage(page+1)
+            setPage(page + 1)
         }
     }
 
+    const _onSetModal = (flag: boolean) => () => {
+        setVisible(flag)
+    }
 
     return (
-        <Animated.View style={{flex: 1, backgroundColor: '#fff', position: 'relative', translateY: y}}>
-            <Reply
-                replyData={replyList[index]}
-                nextReplyData={index + 1 !== replyList.length && replyList[index + 1]}
-                state={state}
-            />
-            <NextButton onPress={_onNextReply} />
-        </Animated.View>
+        <>
+            <Animated.View style={{flex: 1, backgroundColor: '#fff', position: 'relative', translateY: y}}>
+                <Reply
+                    replyData={replyList[index]}
+                    nextReplyData={index + 1 !== replyList.length && replyList[index + 1]}
+                    state={state}
+                    onSetModal={_onSetModal}
+                />
+                <NextButton onPress={_onNextReply} />
+            </Animated.View>
+            {
+                replyList[index] && (
+                    <CommentModal
+                        visible={visible}
+                        onSetModal={_onSetModal}
+                        comment_count={replyList[index].comment_count}
+                        reply_id={replyList[index]._id}
+                        reply_user_id={replyList[index].user_id._id}
+                    />
+                )
+            }
+        </>
+
 
     )
 }

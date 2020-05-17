@@ -14,13 +14,14 @@ interface Props {
     state: any,
     replyData: any,
     nextReplyData: any,
+    onSetModal: (flag: boolean) => any
 }
 
 
 const screenHeight = Math.round(Dimensions.get('window').height)
 
 
-const Reply: FC<Props> = ({state, replyData, nextReplyData}) => {
+const Reply: FC<Props> = ({state, replyData, nextReplyData,onSetModal}) => {
     const ref = useRef<any>()
 
     useEffect(() => {
@@ -87,7 +88,12 @@ const Reply: FC<Props> = ({state, replyData, nextReplyData}) => {
                             scalesPageToFit={false}
                             style={{flex: 1}}
                         />
-                        <Comment state={state} reply_id={replyData._id} comment_count={replyData.comment_count} />
+                        <Comment
+                            state={state}
+                            reply_id={replyData._id}
+                            comment_count={replyData.comment_count}
+                            onSetModal={onSetModal}
+                        />
                     </Wrapper>
                 )
             }
