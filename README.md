@@ -1,4 +1,4 @@
-##  知乎 h5
+##  知乎 Native
 
 > ####  使用React Native开发的安卓App
 
@@ -18,4 +18,6 @@
 <img src="https://images.gitee.com/uploads/images/2020/0508/204906_c2b383c8_5664323.jpeg" width="50%" height="50%" />
 <img src="https://images.gitee.com/uploads/images/2020/0508/204928_fa57709d_5664323.jpeg" width="50%" height="50%" />
 <img src="https://images.gitee.com/uploads/images/2020/0508/204949_c3be1c8f_5664323.jpeg" width="50%" height="50%" />
+<img src="https://images.gitee.com/uploads/images/2020/0518/194629_22f197dc_5664323.jpeg" width="50%" height="50%" />
+<img src="https://images.gitee.com/uploads/images/2020/0518/195809_27200d4e_5664323.jpeg" width="50%" height="50%" />
 

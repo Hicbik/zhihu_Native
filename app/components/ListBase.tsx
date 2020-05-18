@@ -107,9 +107,7 @@ const ListBase: FC<Props> = ({
         return null
     }
 
-    const _keyExtractor = (item: any, index: number) => {
-        return index.toString()
-    }
+    const _keyExtractor = (item: any) => item._id
 
 
     return (
@@ -138,8 +136,7 @@ const ListBase: FC<Props> = ({
                     style={{flex: 1}}
                     data={data}
                     showsVerticalScrollIndicator={false}
-                    initialNumToRender={8}
-                    maxToRenderPerBatch={10}
+                    initialNumToRender={6}
                     onEndReachedThreshold={0.2}
                     ListHeaderComponent={ListHeaderComponent}
                     refreshControl={_refreshControl()}

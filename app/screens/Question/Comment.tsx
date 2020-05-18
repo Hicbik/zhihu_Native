@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from 'react'
 import { Fade, Placeholder, PlaceholderLine, PlaceholderMedia } from 'rn-placeholder'
-import { View, TouchableOpacity } from 'react-native'
+import { View, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import styled from 'styled-components/native'
 import IconDianzan11Copy from '../../components/iconfont/IconDianzan11Copy'
 import { CommentRequest } from '../../utils/request'
@@ -13,7 +13,7 @@ interface Props {
     onSetModal: (flag: boolean) => any
 }
 
-const Comment: FC<Props> = ({state, reply_id, comment_count,onSetModal}) => {
+const Comment: FC<Props> = ({state, reply_id, comment_count, onSetModal}) => {
 
     const [data, setData] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
@@ -79,12 +79,14 @@ const Comment: FC<Props> = ({state, reply_id, comment_count,onSetModal}) => {
 
                 )
             }
-            <CenterView>
-                <Avatar source={{uri: state.avatar}} />
-                <InputWrapper>
-                    <Text style={{fontSize: 15}}>添加评论...</Text>
-                </InputWrapper>
-            </CenterView>
+            <TouchableWithoutFeedback onPress={onSetModal(true)}>
+                <CenterView>
+                    <Avatar source={{uri: state.avatar}} />
+                    <InputWrapper>
+                        <Text style={{fontSize: 15}}>添加评论...</Text>
+                    </InputWrapper>
+                </CenterView>
+            </TouchableWithoutFeedback>
         </Wrapper>
     )
 }

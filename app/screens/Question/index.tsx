@@ -57,6 +57,7 @@ const Question: FC = () => {
         setVisible(flag)
     }
 
+
     return (
         <>
             <Animated.View style={{flex: 1, backgroundColor: '#fff', position: 'relative', translateY: y}}>
@@ -76,6 +77,8 @@ const Question: FC = () => {
                         comment_count={replyList[index].comment_count}
                         reply_id={replyList[index]._id}
                         reply_user_id={replyList[index].user_id._id}
+                        reply_user_nickname={replyList[index].user_id.nickname}
+                        question_id={replyList[index].question_id}
                     />
                 )
             }

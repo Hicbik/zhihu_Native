@@ -97,8 +97,12 @@ export class QuestionRequest {
 }
 
 
-export class CommentRequest  {
+export class CommentRequest {
     static url = 'comment/'
+
+    static Like ({comment_id, type}: { comment_id: string, type: string }) {
+        return axios.post(this.url + 'Like', {comment_id, type})
+    }
 
 
     static featuredComment ({reply_id}: { reply_id: string }) {
@@ -108,5 +112,19 @@ export class CommentRequest  {
     static findComment ({reply_id}: { reply_id: string }) {
         return axios.get(this.url + 'findComment', {params: {reply_id}})
     }
+
+    static create ({question_id, reply_id, content, type, Father_id, reply_user_id, Child_id}: { question_id: string, reply_id: string, content: string, type: string, Father_id: string, reply_user_id?: string, Child_id?: string }) {
+        return axios.post(this.url + 'create', {
+            question_id,
+            reply_id,
+            content,
+            type,
+            Father_id,
+            reply_user_id,
+            Child_id
+        })
+
+    }
+
 
 }
