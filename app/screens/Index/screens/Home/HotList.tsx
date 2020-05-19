@@ -19,13 +19,22 @@ const HotList: FC = () => {
         return QuestionRequest.RecommendListData({page})
     }, [])
 
-    const LinkTo = (_id: string) => () => {
-        navigation.navigate('Question', {_id})
+
+    const LinkTo = (props: { _id: string, reply_id: string }) => () => {
+        navigation.navigate('Question', {
+            _id: props._id,
+            reply_id: props.reply_id
+        })
     }
 
     const _renderItem = ({item, index}: { item: any, index: number }) => {
         return (
-            <TouchableNativeFeedback onPress={LinkTo(item._id)}>
+            <TouchableNativeFeedback
+                onPress={LinkTo({
+                    _id: item.question_id._id,
+                    reply_id: item._id
+                })}
+            >
                 <ItemWrapper>
                     <Wrapper>
                         <View>

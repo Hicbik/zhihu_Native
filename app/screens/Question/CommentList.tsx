@@ -1,5 +1,5 @@
 import React, { FC, useState, useEffect, useImperativeHandle } from 'react'
-import { FlatList, View, TouchableWithoutFeedback } from 'react-native'
+import { FlatList, View, TouchableWithoutFeedback, TouchableOpacity, Vibration } from 'react-native'
 import styled from 'styled-components/native'
 import IconGengduo from '../../components/iconfont/IconGengduo'
 import IconZan from '../../components/iconfont/IconZan'
@@ -35,53 +35,100 @@ const CommentList: FC<Props> = ({reply_id, reply_user_id, onComment, cRef}) => {
         setData([...res.data])
     }
 
-    const _onLike = ({comment_id, type}: { comment_id: string, type: string }) => async () => {
+    const _onLike = ({comment_id, type, index}: { comment_id: string, type: string, index: number }) => async () => {
         const res = await CommentRequest.Like({comment_id, type})
-        if (!res) return
+        setData(data.map(
+            (value, i) => index === i ? {
+                ...value,
+                like_count: res.data.like_count,
+                like_id: res.data.like_id
+            } : value
+        ))
+        Vibration.vibrate(400)
     }
 
-    const ChildComment = ({item, Father_id}: { item: any[], Father_id: string }) => {
+    const _onChildLike = ({comment_id, type, index, childIndex}: { comment_id: string, type: string, index: number, childIndex: number }) => async () => {
+        const res = await CommentRequest.Like({comment_id, type})
+        setData(data.map(
+            (value, i) => index === i ? {
+                ...value,
+                Child: value.Child.map(
+                    (item: any, itemI: number) => itemI === childIndex ? {
+                        ...item,
+                        comment: {
+                            ...item.comment,
+                            like_id: res.data.like_id,
+                            like_count: res.data.like_count
+                        }
+                    } : item
+                )
+            } : value
+        ))
+        Vibration.vibrate(400)
+    }
+
+    const ChildComment = ({item, Father_id, index}: { item: any[], Father_id: string, index: number }) => {
         return (
             <ChildCommentWrapper>
                 {
-                    item.map(value => (
-                        <TouchableWithoutFeedback
-                            onPress={onComment({
-                                name: value.user.nickname,
-                                Father_id,
-                                Child_id: value._id,
-                                reply_user_id: value.user._id
-                            })}
-                            key={value._id}
-                        >
-                            <ChildCommentItemWrapper>
-                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                    <ChildAvatar source={{uri: value.user.avatar}} />
-                                    <NickName>
-                                        {value.user.nickname} {reply_user_id === value.user._id && '(作者)'}
-                                        <IconSanjiaoxingXia1
-                                            color='#d4d4d4'
-                                            size={12}
-                                        />
-                                        {value.reply_user_id.nickname} {reply_user_id === value.reply_user_id._id && '(作者)'}
-                                    </NickName>
-                                    <IconGengduo style={{marginLeft: 'auto'}} color='#999' />
-                                </View>
-                                <View style={{marginLeft: 30}}>
-                                    <Content>{value.comment.content}</Content>
+                    item.map((value, i) => (
+                        <ChildCommentItemWrapper key={value._id}>
+                            <TouchableWithoutFeedback
+                                onPress={onComment({
+                                    name: value.user.nickname,
+                                    Father_id,
+                                    Child_id: value._id,
+                                    reply_user_id: value.user._id
+                                })}
+                            >
+                                <View>
                                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                                        <TipsText>{DiffTime(value.comment.create_time)}</TipsText>
-                                        <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 'auto'}}>
-                                            <TipsText style={{fontSize: 13, marginRight: 5}}>
-                                                {value.comment.like_count}
-                                            </TipsText>
-                                            <IconZan color='#999' size={15} />
-                                        </View>
-                                        <IconPinglun color='#999' size={18} style={{marginLeft: 25}} />
+                                        <ChildAvatar source={{uri: value.user.avatar}} />
+                                        <NickName numberOfLines={1} style={{flex: 1}}>
+                                            {value.user.nickname} {reply_user_id === value.user._id && '(作者)'}
+                                            <IconSanjiaoxingXia1
+                                                color='#d4d4d4'
+                                                size={12}
+                                            />
+                                            {value.reply_user_id.nickname} {reply_user_id === value.reply_user_id._id && '(作者)'}
+                                        </NickName>
+                                        <IconGengduo style={{marginLeft: 'auto'}} color='#999' />
+                                    </View>
+                                    <View style={{marginLeft: 30}}>
+                                        <Content>{value.comment.content}</Content>
                                     </View>
                                 </View>
-                            </ChildCommentItemWrapper>
-                        </TouchableWithoutFeedback>
+                            </TouchableWithoutFeedback>
+                            <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 30}}>
+                                <TipsText>{DiffTime(value.comment.create_time)}</TipsText>
+                                <TouchableOpacity
+                                    style={{marginLeft: 'auto'}}
+                                    onPress={_onChildLike({
+                                        type: value.comment.like_id.includes(state._id) ? 'down' : 'up',
+                                        comment_id: value.comment._id,
+                                        index,
+                                        childIndex: i
+                                    })}
+                                >
+                                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                        <TipsText
+                                            style={{
+                                                fontSize: 13,
+                                                marginRight: 5,
+                                                color: value.comment.like_id.includes(state._id) ? '#0084ff' : '#999'
+                                            }}
+                                        >
+                                            {value.comment.like_count}
+                                        </TipsText>
+                                        <IconZan
+                                            color={value.comment.like_id.includes(state._id) ? '#0084ff' : '#999'}
+                                            size={15}
+                                        />
+                                    </View>
+                                </TouchableOpacity>
+                                <IconPinglun color='#999' size={18} style={{marginLeft: 25}} />
+                            </View>
+                        </ChildCommentItemWrapper>
                     ))
                 }
             </ChildCommentWrapper>
@@ -89,42 +136,61 @@ const CommentList: FC<Props> = ({reply_id, reply_user_id, onComment, cRef}) => {
         )
     }
 
-    const _renderItem = ({item}: { item: any }) => {
+    const _renderItem = ({item, index}: { item: any, index: number }) => {
         return (
-            <TouchableWithoutFeedback
-                // onPress={onComment({
-                //     name: item.user_id.nickname,
-                //     Father_id: item._id,
-                //     reply_user_id: item.user_id._id
-                // })}
-            >
-                <ItemWrapper>
-                    <Avatar source={{uri: item.user_id.avatar}} />
-                    <View style={{flex: 1}}>
-                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <NickName>{item.user_id.nickname} {reply_user_id === item.user_id._id && '(作者)'}</NickName>
-                            <IconGengduo style={{marginLeft: 'auto'}} color='#999' />
+
+            <ItemWrapper>
+                <Avatar source={{uri: item.user_id.avatar}} />
+                <View style={{flex: 1}}>
+                    <TouchableWithoutFeedback
+                        onPress={onComment({
+                            name: item.user_id.nickname,
+                            Father_id: item._id,
+                            reply_user_id: item.user_id._id
+                        })}
+                    >
+                        <View>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                <NickName>
+                                    {item.user_id.nickname} {reply_user_id === item.user_id._id && '(作者)'}
+                                </NickName>
+                                <IconGengduo style={{marginLeft: 'auto'}} color='#999' />
+                            </View>
+                            <Content>{item.content}</Content>
                         </View>
-                        <Content>{item.content}</Content>
-                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                            <TipsText>{DiffTime(item.create_time)}</TipsText>
-                            <TouchableWithoutFeedback
+                    </TouchableWithoutFeedback>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <TipsText>{DiffTime(item.create_time)}</TipsText>
+                        <View style={{marginLeft: 'auto'}}>
+                            <TouchableOpacity
                                 onPress={_onLike({
                                     type: item.like_id.includes(state._id) ? 'down' : 'up',
-                                    comment_id: item._id
+                                    comment_id: item._id,
+                                    index
                                 })}
                             >
                                 <View style={{flexDirection: 'row', alignItems: 'center', marginLeft: 'auto'}}>
-                                    <TipsText style={{fontSize: 13, marginRight: 5}}>{item.like_count}</TipsText>
-                                    <IconZan color={item.like_id.includes(state._id) ? '#0084ff' : '#999'} size={15} />
+                                    <TipsText
+                                        style={{
+                                            fontSize: 13,
+                                            marginRight: 5,
+                                            color: item.like_id.includes(state._id) ? '#0084ff' : '#999'
+                                        }}
+                                    >
+                                        {item.like_count}
+                                    </TipsText>
+                                    <IconZan
+                                        color={item.like_id.includes(state._id) ? '#0084ff' : '#999'}
+                                        size={15}
+                                    />
                                 </View>
-                            </TouchableWithoutFeedback>
-                            <IconPinglun color='#999' size={18} style={{marginLeft: 25}} />
+                            </TouchableOpacity>
                         </View>
-                        {!!item.Child.length && <ChildComment item={item.Child} Father_id={item._id} />}
+                        <IconPinglun color='#999' size={18} style={{marginLeft: 25}} />
                     </View>
-                </ItemWrapper>
-            </TouchableWithoutFeedback>
+                    {!!item.Child.length && <ChildComment item={item.Child} Father_id={item._id} index={index} />}
+                </View>
+            </ItemWrapper>
         )
     }
 

@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
-import { Dimensions } from 'react-native'
+import { Dimensions,TouchableOpacity } from 'react-native'
+import { useNavigation } from '@react-navigation/native'
 import styled from 'styled-components/native'
 import IconArrowRight from '../../components/iconfont/IconArrowRight'
 
@@ -7,11 +8,12 @@ const screenWidth = Math.round(Dimensions.get('window').width)
 
 
 interface Props {
-    title:string,
-    reply_count:number
+    title: string,
+    reply_count: number
 }
 
-const Header: FC<Props> = ({title,reply_count}) => {
+const Header: FC<Props> = ({title, reply_count}) => {
+
     return (
         <Wrapper>
             <Title ellipsizeMode='tail' numberOfLines={1}>
@@ -26,10 +28,17 @@ const Header: FC<Props> = ({title,reply_count}) => {
 }
 
 const Right: FC = () => {
+
+    const navigation = useNavigation()
+
+    const LinkTo = ()=>{
+        navigation.navigate('ReplyEdit')
+    }
+
     return (
-        <RightText>
-            写回答
-        </RightText>
+        <TouchableOpacity onPress={LinkTo}>
+            <RightText>写回答</RightText>
+        </TouchableOpacity>
     )
 }
 

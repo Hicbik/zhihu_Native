@@ -1,12 +1,13 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect, useRef, useState } from 'react'
 import { useRoute, useNavigation } from '@react-navigation/native'
-import { ToastAndroid, Animated, Modal } from 'react-native'
+import { ToastAndroid, Animated } from 'react-native'
 import { useTypedSelector } from '../../store/reducer'
 import { Header, Right } from './Header'
 import Reply from './Reply'
 import NextButton from './NextButton'
 import { QuestionRequest } from '../../utils/request'
 import CommentModal from './CommentModal'
+import BottomBar from './BottomBar'
 
 const Question: FC = () => {
 
@@ -16,15 +17,19 @@ const Question: FC = () => {
     const [replyList, setReplyList] = useState<any[]>([])
     const [index, setIndex] = useState(0)
     const [page, setPage] = useState(1)
-    const [visible, setVisible] = useState(false)
     const [y] = useState(new Animated.Value(0))
+    const bottomBar = useRef<any>()
+    const modalRef = useRef<any>()
 
     useEffect(() => {
         ;(async () => {
+            const res = await QuestionRequest.findOne({_id: params._id})
             navigation.setOptions({
-                headerTitle: () => <Header title={params.title} reply_count={params.reply_count} />,
+                headerTitle: () => <Header title={res.data.title} reply_count={res.data.reply_count} />,
                 headerRight: () => <Right />
             })
+        })()
+        ;(async () => {
             const [res1, res2] = await Promise.all([
                 QuestionRequest.getReply({question_id: params._id, reply_id: params.reply_id}),
                 QuestionRequest.getReplyNin({question_id: params._id, reply_id: params.reply_id, page})
@@ -32,7 +37,7 @@ const Question: FC = () => {
             setPage(page + 1)
             setReplyList([...res1.data, ...res2.data])
         })()
-    }, [params.title, params.reply_count, params._id, params.reply_id])
+    }, [params._id, params.reply_id])
 
     const _onNextReply = async () => {
         if (index + 1 === replyList.length) {
@@ -53,10 +58,6 @@ const Question: FC = () => {
         }
     }
 
-    const _onSetModal = (flag: boolean) => () => {
-        setVisible(flag)
-    }
-
 
     return (
         <>
@@ -65,15 +66,28 @@ const Question: FC = () => {
                     replyData={replyList[index]}
                     nextReplyData={index + 1 !== replyList.length && replyList[index + 1]}
                     state={state}
-                    onSetModal={_onSetModal}
+                    modalRef={modalRef}
+                    BottomBarRef={bottomBar}
                 />
                 <NextButton onPress={_onNextReply} />
+                {
+                    replyList[index] && (
+                        <BottomBar
+                            cRef={bottomBar}
+                            like_id={replyList[index].like_id}
+                            no_like_id={replyList[index].no_like_id}
+                            reply_id={replyList[index]._id}
+                            num={replyList[index].like_count}
+                            modalRef={modalRef}
+                            comment_count={replyList[index].comment_count}
+                        />
+                    )
+                }
             </Animated.View>
             {
                 replyList[index] && (
                     <CommentModal
-                        visible={visible}
-                        onSetModal={_onSetModal}
+                        cRef={modalRef}
                         comment_count={replyList[index].comment_count}
                         reply_id={replyList[index]._id}
                         reply_user_id={replyList[index].user_id._id}

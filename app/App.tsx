@@ -15,6 +15,7 @@ import Search from './screens/Search'
 import SignIn from './screens/SignIn'
 import People from './screens/People'
 import PeopleDeal from './screens/PeopleDeal'
+import ReplyEdit from './screens/ReplyEdit'
 
 const Stack = createStackNavigator()
 
@@ -40,7 +41,7 @@ const App: FC = () => {
                         <Stack.Navigator
                             screenOptions={{
                                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-                                headerTintColor:'#646464'
+                                headerTintColor: '#646464'
                             }}
 
                         >
@@ -81,8 +82,8 @@ const App: FC = () => {
                                 component={People}
                                 options={{
                                     headerStyle: {backgroundColor: '#b8c0d7', elevation: 0},
-                                    title:'',
-                                    headerTintColor:'#fff'
+                                    title: '',
+                                    headerTintColor: '#fff'
                                 }}
 
                             />
@@ -90,6 +91,11 @@ const App: FC = () => {
                             <Stack.Screen
                                 name='PeopleDeal'
                                 component={PeopleDeal}
+                            />
+
+                            <Stack.Screen
+                                name='ReplyEdit'
+                                component={ReplyEdit}
                             />
 
                         </Stack.Navigator>

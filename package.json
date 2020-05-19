@@ -26,6 +26,7 @@
     "react-native": "0.62.2",
     "react-native-autoheight-webview": "^1.5.1",
     "react-native-bootsplash": "^2.2.4",
+    "react-native-cn-richtext-editor": "^1.0.42",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-htmlview": "^0.15.0",
     "react-native-linear-gradient": "^2.5.6",

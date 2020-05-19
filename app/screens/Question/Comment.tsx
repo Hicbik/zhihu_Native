@@ -10,10 +10,10 @@ interface Props {
     state: any,
     reply_id: string,
     comment_count: number,
-    onSetModal: (flag: boolean) => any
+    modalRef:  any
 }
 
-const Comment: FC<Props> = ({state, reply_id, comment_count, onSetModal}) => {
+const Comment: FC<Props> = ({state, reply_id, comment_count, modalRef}) => {
 
     const [data, setData] = useState<any[]>([])
     const [loading, setLoading] = useState(true)
@@ -26,6 +26,11 @@ const Comment: FC<Props> = ({state, reply_id, comment_count, onSetModal}) => {
         })()
     }, [reply_id])
 
+
+
+    const _onButton = (state:boolean)=>()=>{
+        modalRef.current.onSetModal(state)
+    }
 
     const Loging = () => {
         return (
@@ -69,7 +74,7 @@ const Comment: FC<Props> = ({state, reply_id, comment_count, onSetModal}) => {
             }
             {
                 !!comment_count && (
-                    <TouchableOpacity onPress={onSetModal(true)}>
+                    <TouchableOpacity onPress={_onButton(true)}>
                         <Text
                             style={{fontWeight: 'bold', fontSize: 16, marginLeft: 35, marginTop: 5, marginBottom: 15}}
                         >
@@ -79,7 +84,7 @@ const Comment: FC<Props> = ({state, reply_id, comment_count, onSetModal}) => {
 
                 )
             }
-            <TouchableWithoutFeedback onPress={onSetModal(true)}>
+            <TouchableWithoutFeedback onPress={_onButton(true)}>
                 <CenterView>
                     <Avatar source={{uri: state.avatar}} />
                     <InputWrapper>

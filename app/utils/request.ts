@@ -86,6 +86,10 @@ export class QuestionRequest {
         return axios.get(this.url + 'PeopleQuestion', {params: {_id, page}})
     }
 
+    static findOne ({_id}: { _id: string | undefined }) {
+        return axios.get(this.url + 'findOne', {params: {_id}})
+    }
+
     static getReply ({question_id, reply_id}: { question_id: string | undefined, reply_id?: string }) {
         return axios.get(this.url + 'getReply', {params: {question_id, reply_id}})
     }
@@ -93,6 +97,12 @@ export class QuestionRequest {
     static getReplyNin ({question_id, reply_id, page}: { question_id: string, reply_id: string, page: number }) {
         return axios.get(this.url + 'getReplyNin', {params: {question_id, reply_id, page}})
     }
+
+
+    static voters ({like, reply_id}: { like: { flag: string, type: string }, reply_id: string, }) {
+        return axios.post(this.url + 'voters', {like, reply_id})
+    }
+
 
 }
 
@@ -103,7 +113,6 @@ export class CommentRequest {
     static Like ({comment_id, type}: { comment_id: string, type: string }) {
         return axios.post(this.url + 'Like', {comment_id, type})
     }
-
 
     static featuredComment ({reply_id}: { reply_id: string }) {
         return axios.get(this.url + 'featuredComment', {params: {reply_id}})

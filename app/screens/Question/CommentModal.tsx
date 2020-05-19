@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect, useRef } from 'react'
+import React, { FC, useState, useEffect, useRef, useImperativeHandle } from 'react'
 import Modal from 'react-native-modal'
 import styled from 'styled-components/native'
 import { StatusBar, View, TouchableOpacity, Keyboard, KeyboardAvoidingView } from 'react-native'
@@ -7,8 +7,7 @@ import CommentList from './CommentList'
 import { CommentRequest } from '../../utils/request'
 
 interface Props {
-    visible: boolean,
-    onSetModal: (flag: boolean) => any,
+    cRef: any,
     comment_count: number,
     reply_id: string,
     reply_user_id: string,
@@ -139,8 +138,7 @@ const Main: FC<MainProps> = ({
 
 
 const CommentModal: FC<Props> = ({
-    visible,
-    onSetModal,
+    cRef,
     comment_count,
     reply_id,
     reply_user_id,
@@ -148,6 +146,15 @@ const CommentModal: FC<Props> = ({
     question_id
 }) => {
 
+    const [visible, setVisible] = useState(false)
+
+    useImperativeHandle(cRef, () => ({
+        onSetModal: setVisible
+    }))
+
+    const onSetModal = (state: boolean) => () => {
+        setVisible(state)
+    }
 
     return (
         <Modal

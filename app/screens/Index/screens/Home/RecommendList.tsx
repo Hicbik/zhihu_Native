@@ -17,11 +17,9 @@ const RecommendList: FC = () => {
         return QuestionRequest.RecommendListData({page})
     }, [])
 
-    const LinkTo = (props: { _id: string, title: string, reply_count: number, reply_id: string }) => () => {
+    const LinkTo = (props: { _id: string, reply_id: string }) => () => {
         navigation.navigate('Question', {
             _id: props._id,
-            title: props.title,
-            reply_count: props.reply_count,
             reply_id: props.reply_id
         })
     }
@@ -31,8 +29,6 @@ const RecommendList: FC = () => {
             <TouchableNativeFeedback
                 onPress={LinkTo({
                     _id: item.question_id._id,
-                    title: item.question_id.title,
-                    reply_count: item.question_id.reply_count,
                     reply_id: item._id
                 })}
             >

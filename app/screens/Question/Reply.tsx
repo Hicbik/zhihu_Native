@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef } from 'react'
-import { Dimensions, ScrollView } from 'react-native'
+import { Dimensions, ScrollView, } from 'react-native'
 import styled from 'styled-components/native'
 import AutoHeightWebView from 'react-native-autoheight-webview'
 import AvararPeople from '../../components/AvararPeople'
@@ -14,21 +14,23 @@ interface Props {
     state: any,
     replyData: any,
     nextReplyData: any,
-    onSetModal: (flag: boolean) => any
+    modalRef: any,
+    BottomBarRef: any
 }
 
 
 const screenHeight = Math.round(Dimensions.get('window').height)
 
 
-const Reply: FC<Props> = ({state, replyData, nextReplyData,onSetModal}) => {
+const Reply: FC<Props> = ({state, replyData, nextReplyData, modalRef, BottomBarRef}) => {
     const ref = useRef<any>()
+    const viewRef = useRef<any>()
 
     useEffect(() => {
         ref.current.scrollTo({x: 0, y: 0, animated: true})
     }, [replyData])
 
-    const NextReply = () => {
+    const NextReply =() => {
         if (!nextReplyData) return null
         return (
             <NextWrapper>
@@ -62,12 +64,24 @@ const Reply: FC<Props> = ({state, replyData, nextReplyData,onSetModal}) => {
         )
     }
 
+
+    const _onScroll = ({nativeEvent}: any) => {
+
+        const y = nativeEvent.layoutMeasurement.height + nativeEvent.contentOffset.y - viewRef.current.layout.height
+        if (y > 0) BottomBarRef.current.setShow(false)
+        if (y < 0) BottomBarRef.current.setShow(true)
+    }
+
+    const getViewConfig = ({nativeEvent}: any) => {
+        viewRef.current = nativeEvent
+    }
+
     return (
-        <ScrollView style={{flex: 1}} ref={ref}>
+        <ScrollView style={{flex: 1}} ref={ref} onScroll={_onScroll}>
             {!replyData && <Loading />}
             {
                 replyData && (
-                    <Wrapper>
+                    <Wrapper ref={viewRef} onLayout={getViewConfig}>
                         <Top>
                             <AvararPeople
                                 avatar={replyData.user_id.avatar}
@@ -92,7 +106,7 @@ const Reply: FC<Props> = ({state, replyData, nextReplyData,onSetModal}) => {
                             state={state}
                             reply_id={replyData._id}
                             comment_count={replyData.comment_count}
-                            onSetModal={onSetModal}
+                            modalRef={modalRef}
                         />
                     </Wrapper>
                 )
@@ -107,6 +121,7 @@ const Wrapper = styled.View`
 padding: 15px 0;
 flex: 1;
 min-height: ${screenHeight}px;
+position: relative;
 `
 
 const Top = styled.View`
@@ -125,4 +140,4 @@ overflow: hidden;
 position: relative;
 `
 
-export default Reply
+export default React.memo(Reply)
