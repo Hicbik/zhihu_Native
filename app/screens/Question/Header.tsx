@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { Dimensions,TouchableOpacity } from 'react-native'
+import { Dimensions, TouchableOpacity } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import styled from 'styled-components/native'
 import IconArrowRight from '../../components/iconfont/IconArrowRight'
@@ -27,24 +27,36 @@ const Header: FC<Props> = ({title, reply_count}) => {
     )
 }
 
-const Right: FC = () => {
+interface RightProps {
+    title: string,
+    question_id: string,
+    myReply: any,
+    seeMyReply: ({reply_id}: { reply_id: string }) => any
+}
+
+const Right: FC<RightProps> = ({title, question_id, myReply,seeMyReply}) => {
 
     const navigation = useNavigation()
 
-    const LinkTo = ()=>{
-        navigation.navigate('ReplyEdit')
+    const LinkTo = () => {
+
+        if (myReply) {
+            seeMyReply({reply_id:myReply.reply})
+        } else {
+            navigation.navigate('ReplyEdit', {question_id, title})
+        }
     }
 
     return (
         <TouchableOpacity onPress={LinkTo}>
-            <RightText>写回答</RightText>
+            <RightText>{myReply ? '我的回答' : '写回答'}</RightText>
         </TouchableOpacity>
     )
 }
 
 const Wrapper = styled.View`
 max-width: ${screenWidth * 0.7}px;
-margin-left: -20px;
+margin-left: -30px;
 `
 const Title = styled.Text`
 color: #1a1a1a;

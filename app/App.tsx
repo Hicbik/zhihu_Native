@@ -8,6 +8,7 @@ import RNBootSplash from 'react-native-bootsplash'
 import { Provider } from 'react-redux'
 import { UserRequest } from './utils/request'
 import store from './store'
+import { navigation } from './utils/navigation'
 
 import Index from './screens/Index'
 import Question from './screens/Question'
@@ -16,6 +17,7 @@ import SignIn from './screens/SignIn'
 import People from './screens/People'
 import PeopleDeal from './screens/PeopleDeal'
 import ReplyEdit from './screens/ReplyEdit'
+import NewQuestion from './screens/NewQuestion'
 
 const Stack = createStackNavigator()
 
@@ -34,7 +36,7 @@ const App: FC = () => {
     return (
         <Provider store={store}>
             <SafeAreaProvider>
-                <NavigationContainer>
+                <NavigationContainer ref={navigation}>
                     <StatusBar barStyle='dark-content' backgroundColor='#ebeff2' />
                     <SafeAreaView style={{flex: 1, backgroundColor: '#f6f6f6'}}>
 
@@ -59,6 +61,15 @@ const App: FC = () => {
                                     cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS
                                 }}
                             />
+
+                            <Stack.Screen
+                                name='NewQuestion'
+                                component={NewQuestion}
+                                options={{
+                                    cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS
+                                }}
+                            />
+
 
                             <Stack.Screen
                                 name='Search'
@@ -96,6 +107,10 @@ const App: FC = () => {
                             <Stack.Screen
                                 name='ReplyEdit'
                                 component={ReplyEdit}
+                                options={{
+                                    headerStyle: {backgroundColor: '#fff', elevation: 0},
+                                    title: '',
+                                }}
                             />
 
                         </Stack.Navigator>

@@ -6,12 +6,21 @@ import IconZhibo from '../../../../components/iconfont/IconZhibo'
 import IconJiahao from '../../../../components/iconfont/IconJiahao'
 import Icon from '../../../../components/iconfont/Icon'
 
-const Search: FC = () => {
+
+interface Props {
+    modalRef:any
+}
+
+const Search: FC<Props> = ({modalRef}) => {
     const navigation = useNavigation()
 
 
     const LinkTo = (name: string) => () => {
         navigation.navigate(name)
+    }
+
+    const openModal = ()=>{
+        modalRef.current.openModal()
     }
 
     return (
@@ -25,7 +34,7 @@ const Search: FC = () => {
                     <Text ellipsizeMode='tail' numberOfLines={1}>React Hook!</Text>
                 </Input>
             </TouchableWithoutFeedback>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={openModal}>
                 <IconJiahao size={22} color='#444' />
             </TouchableOpacity>
         </Wrapper>

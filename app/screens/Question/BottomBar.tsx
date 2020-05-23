@@ -1,69 +1,50 @@
-import React, { FC, useState, useImperativeHandle, useEffect } from 'react'
+import React, { FC, useState, useImperativeHandle } from 'react'
 import { TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 import IconSanjiaoxing from '../../components/iconfont/IconSanjiaoxing'
 import IconPinglun from '../../components/iconfont/IconPinglun'
-import { useTypedSelector } from '../../store/reducer'
 import { QuestionRequest } from '../../utils/request'
 
 
 interface Props {
     cRef?: any,
-    num: number,
-    like_id: string[],
-    no_like_id: string[],
     reply_id: string,
     modalRef: any,
-    comment_count: number
+    comment_count: number,
+    borderTop?: boolean,
+    likeConfig: any,
+    setLikeConfig: any
 }
 
 const BottomBar: FC<Props> = ({
     cRef,
-    num,
-    like_id,
-    no_like_id,
-    reply_id,
     modalRef,
-    comment_count
+    comment_count,
+    borderTop = true,
+    likeConfig,
+    setLikeConfig,
+    reply_id
 }) => {
 
-    const state = useTypedSelector(state => state.User)
     const [show, setShow] = useState(true)
-    const [flag, setFlag] = useState('no')
-    const [likeCount, setLikeCount] = useState(() => num!)
-
 
     useImperativeHandle(cRef, () => ({
         setShow
     }))
 
-
-    useEffect(() => {
-        setFlag('no')
-        setLikeCount(num)
-    }, [reply_id])
-
-    useEffect(() => {
-        setFlag(() => {
-            if (like_id.includes(state._id as string)) return 'up'
-            else if (no_like_id.includes(state._id as string)) return 'down'
-            else return 'no'
-        })
-    }, [state._id as string, like_id, no_like_id])
-
     const _onButton = (type: string) => async () => {
         let flagNum: string
         let pType = type
-        if (type !== flag && flag !== 'no') flagNum = '1'
-        else if (type !== flag && flag === 'no') flagNum = '2'
-        else if (type === flag) {
+        if (type !== likeConfig.flag && likeConfig.flag !== 'no') flagNum = '1'
+        else if (type !== likeConfig.flag && likeConfig.flag === 'no') flagNum = '2'
+        else if (type === likeConfig.flag) {
             type = 'no'
             flagNum = '3'
         }
         const res = await QuestionRequest.voters({like: {type: pType, flag: flagNum!}, reply_id})
-        if (!res) return
-        setFlag(type)
-        setLikeCount(res.data.like_count)
+        if (res.state === 'err') return
+
+        setLikeConfig({flag: type, likeCount: res.data.like_count})
     }
 
 
@@ -74,14 +55,14 @@ const BottomBar: FC<Props> = ({
     if (!show) return null
 
     return (
-        <Wrapper>
+        <Wrapper borderTop={borderTop}>
             {
-                flag === 'no' ? (
+                likeConfig.flag === 'no' ? (
                     <LikeButton>
                         <TouchableOpacity onPress={_onButton('up')}>
                             <View>
                                 <IconSanjiaoxing color='#0084ff' size={14} style={{marginTop: 2}} />
-                                <Text>赞同 {likeCount}</Text>
+                                <Text>赞同 {likeConfig.likeCount}</Text>
                             </View>
                         </TouchableOpacity>
                         <Line />
@@ -96,30 +77,28 @@ const BottomBar: FC<Props> = ({
                         </TouchableOpacity>
                     </LikeButton>
                 ) : (
-                    flag === 'up' ? (
+                    likeConfig.flag === 'up' ? (
                         <LikeButton style={{backgroundColor: '#0084ff'}}>
                             <TouchableOpacity onPress={_onButton('up')}>
                                 <View>
                                     <IconSanjiaoxing color='#fff' size={14} style={{marginTop: 2}} />
-                                    <Text style={{color: '#fff'}}>赞同 {likeCount}</Text>
+                                    <Text style={{color: '#fff'}}>赞同 {likeConfig.likeCount}</Text>
                                 </View>
                             </TouchableOpacity>
                         </LikeButton>
                     ) : (
-                        (
-                            <LikeButton style={{backgroundColor: '#0084ff'}}>
-                                <TouchableOpacity onPress={_onButton('down')}>
-                                    <View>
-                                        <IconSanjiaoxing
-                                            color='#fff'
-                                            size={14}
-                                            style={{marginTop: -2, transform: [{rotateX: '180deg'}]}}
-                                        />
-                                        <Text style={{color: '#fff'}}>已反对</Text>
-                                    </View>
-                                </TouchableOpacity>
-                            </LikeButton>
-                        )
+                        <LikeButton style={{backgroundColor: '#0084ff'}}>
+                            <TouchableOpacity onPress={_onButton('down')}>
+                                <View>
+                                    <IconSanjiaoxing
+                                        color='#fff'
+                                        size={14}
+                                        style={{marginTop: -2, transform: [{rotateX: '180deg'}]}}
+                                    />
+                                    <Text style={{color: '#fff'}}>已反对</Text>
+                                </View>
+                            </TouchableOpacity>
+                        </LikeButton>
                     )
                 )
             }
@@ -144,8 +123,8 @@ width: 100%;
 background-color: #fff;
 flex-direction: row;
 align-items: center;
-padding: 0 17px;
-border-top-width: 1px;
+padding: 2px 17px;
+border-top-width: ${(props: { borderTop: boolean | undefined }) => props.borderTop ? '1px' : '0'};
 border-top-color: #ebebeb;
 `
 const View = styled.View`

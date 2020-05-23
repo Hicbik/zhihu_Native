@@ -4,6 +4,10 @@
 import React, { FunctionComponent } from 'react';
 import { ViewProps } from 'react-native';
 import { GProps } from 'react-native-svg';
+import IconBi from './IconBi';
+import IconXiala from './IconXiala';
+import IconWenti from './IconWenti';
+import IconFabu from './IconFabu';
 import IconSanjiaoxingXia1 from './IconSanjiaoxingXia1';
 import IconZan from './IconZan';
 import IconDianzan11Copy from './IconDianzan11Copy';
@@ -31,7 +35,7 @@ import IconTongzhi from './IconTongzhi';
 import IconFaxian from './IconFaxian';
 import IconWenzhang from './IconWenzhang';
 
-export type IconNames = 'sanjiaoxing-xia1' | 'zan' | 'dianzan11-copy' | 'xiayige' | 'nv' | 'tubiaozhizuomoban' | 'jiahao1' | 'sanjiaoxing' | 'shezhi' | 'arrow-right' | 'arrow-lift' | 'arrow-up' | 'close' | 'arrow-down' | 'xiangshangsanjiaoxing' | 'xiangxiasanjiaoxing' | 'pinglun' | 'sousuo' | 'jiahao' | '-' | 'zhibo' | 'gengduo' | 'huabanfuben' | 'tongzhi' | 'faxian' | 'wenzhang';
+export type IconNames = 'bi' | 'xiala' | 'wenti' | 'fabu' | 'sanjiaoxing-xia1' | 'zan' | 'dianzan11-copy' | 'xiayige' | 'nv' | 'tubiaozhizuomoban' | 'jiahao1' | 'sanjiaoxing' | 'shezhi' | 'arrow-right' | 'arrow-lift' | 'arrow-up' | 'close' | 'arrow-down' | 'xiangshangsanjiaoxing' | 'xiangxiasanjiaoxing' | 'pinglun' | 'sousuo' | 'jiahao' | '-' | 'zhibo' | 'gengduo' | 'huabanfuben' | 'tongzhi' | 'faxian' | 'wenzhang';
 
 interface Props extends GProps, ViewProps {
   name: IconNames;
@@ -41,6 +45,14 @@ interface Props extends GProps, ViewProps {
 
 const IconFont: FunctionComponent<Props> = ({ name, ...rest }) => {
   switch (name) {
+    case 'bi':
+      return <IconBi {...rest} />;
+    case 'xiala':
+      return <IconXiala {...rest} />;
+    case 'wenti':
+      return <IconWenti {...rest} />;
+    case 'fabu':
+      return <IconFabu {...rest} />;
     case 'sanjiaoxing-xia1':
       return <IconSanjiaoxingXia1 {...rest} />;
     case 'zan':

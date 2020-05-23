@@ -13,7 +13,7 @@ interface Props {
     reply_id: string,
     reply_user_id: string,
     onComment: ({name, Father_id, reply_user_id, Child_id}: { name: string, Father_id: string, reply_user_id: string, Child_id?: string }) => any,
-    cRef: any
+    cRef: any,
 }
 
 
@@ -37,6 +37,9 @@ const CommentList: FC<Props> = ({reply_id, reply_user_id, onComment, cRef}) => {
 
     const _onLike = ({comment_id, type, index}: { comment_id: string, type: string, index: number }) => async () => {
         const res = await CommentRequest.Like({comment_id, type})
+        if (res.state === 'err') {
+            return
+        }
         setData(data.map(
             (value, i) => index === i ? {
                 ...value,
@@ -49,6 +52,9 @@ const CommentList: FC<Props> = ({reply_id, reply_user_id, onComment, cRef}) => {
 
     const _onChildLike = ({comment_id, type, index, childIndex}: { comment_id: string, type: string, index: number, childIndex: number }) => async () => {
         const res = await CommentRequest.Like({comment_id, type})
+        if (res.state === 'err') {
+            return
+        }
         setData(data.map(
             (value, i) => index === i ? {
                 ...value,

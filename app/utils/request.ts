@@ -1,6 +1,8 @@
 import axios from 'axios'
 import AsyncStorage from '@react-native-community/async-storage'
-import store from '../store/index'
+import { ToastAndroid } from 'react-native'
+import { LinkToSingIn } from './navigation'
+import store from '../store'
 
 axios.defaults.baseURL = 'http://192.168.31.218:7001/'
 
@@ -22,19 +24,47 @@ axios.interceptors.response.use(
 )
 
 
-export class UserRequest {
+export class Base {
+    static No_Login (callBack: () => any) {
+        const {User} = store.getState()
+        if (!User.isLogin) {
+            ToastAndroid.show('亲,你还没有登录呢!', ToastAndroid.SHORT)
+            LinkToSingIn()
+            return {
+                state: 'err'
+            }
+        }
+        return callBack()
+    }
+}
+
+
+export class UserRequest extends Base {
     static url = 'user/'
+
+
+    static async uploadToken () {
+        const res: any = await axios.get('/qiniutoken')
+        if (res.state === 'err') return await AsyncStorage.removeItem('qiniuToken')
+        await AsyncStorage.setItem('qiniuToken', res.qiniuToken)
+    }
 
     static async Token () {
 
-        const token = await AsyncStorage.getItem('token')
-        if (!token) return
-        const res: any = await axios.post(this.url + 'Token')
-        if (res.state === 'err' || !res.data) return await AsyncStorage.removeItem('token')
-        store.dispatch({
-            type: 'user/signIn',
-            value: {...res.data}
-        })
+        const userToken = async () => {
+            const token = await AsyncStorage.getItem('token')
+            if (!token) return
+            const res: any = await axios.post(this.url + 'Token')
+            if (res.state === 'err' || !res.data) return await AsyncStorage.removeItem('token')
+            store.dispatch({
+                type: 'user/signIn',
+                value: {...res.data}
+            })
+        }
+        await Promise.all([
+            userToken(),
+            this.uploadToken()
+        ])
     }
 
 
@@ -63,15 +93,40 @@ export class UserRequest {
     }
 
     static attention ({_id, type}: { _id: string, type: string }) {
-        return axios.get(this.url + 'attention', {params: {_id, type}})
+        return this.No_Login(() => (
+            axios.get(this.url + 'attention', {params: {_id, type}})
+        ))
     }
 
 
 }
 
 
-export class QuestionRequest {
+export class QuestionRequest extends Base {
     static url = 'question/'
+
+
+    static focus ({_id, type}: { _id: string, type: string }) {
+        return this.No_Login(() => (
+            axios.get(this.url + 'focus', {params: {_id, type}})
+        ))
+    }
+
+    static getNoReplyQuestion ({user_id}: { user_id: string }) {
+        return axios.get(this.url + 'getNoReplyQuestion', {params: {user_id}})
+    }
+
+    static create ({title, content, content_html, topic, image_field}: { title: string, content: string, content_html: string, topic: string[], image_field: any[] }) {
+        return this.No_Login(() => (
+            axios.post(this.url + 'create', {title, content, content_html, topic, image_field})
+        ))
+    }
+
+    static createReplay ({content, content_html, question_id, image_field}: { content: string, content_html: string, question_id: string, image_field: any[] }) {
+        return this.No_Login(() => (
+            axios.post(this.url + 'createReply', {content, content_html, question_id, image_field})
+        ))
+    }
 
 
     static RecommendListData ({page}: { page: number }) {
@@ -100,18 +155,22 @@ export class QuestionRequest {
 
 
     static voters ({like, reply_id}: { like: { flag: string, type: string }, reply_id: string, }) {
-        return axios.post(this.url + 'voters', {like, reply_id})
+        return this.No_Login(() => (
+            axios.post(this.url + 'voters', {like, reply_id})
+        ))
     }
 
 
 }
 
 
-export class CommentRequest {
+export class CommentRequest extends Base {
     static url = 'comment/'
 
     static Like ({comment_id, type}: { comment_id: string, type: string }) {
-        return axios.post(this.url + 'Like', {comment_id, type})
+        return this.No_Login(() => (
+            axios.post(this.url + 'Like', {comment_id, type})
+        ))
     }
 
     static featuredComment ({reply_id}: { reply_id: string }) {
@@ -123,17 +182,19 @@ export class CommentRequest {
     }
 
     static create ({question_id, reply_id, content, type, Father_id, reply_user_id, Child_id}: { question_id: string, reply_id: string, content: string, type: string, Father_id: string, reply_user_id?: string, Child_id?: string }) {
-        return axios.post(this.url + 'create', {
-            question_id,
-            reply_id,
-            content,
-            type,
-            Father_id,
-            reply_user_id,
-            Child_id
-        })
-
+        return this.No_Login(() => (
+            axios.post(this.url + 'create', {
+                question_id,
+                reply_id,
+                content,
+                type,
+                Father_id,
+                reply_user_id,
+                Child_id
+            })
+        ))
     }
 
 
 }
+

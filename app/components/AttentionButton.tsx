@@ -24,9 +24,13 @@ const AttentionButton: FC<Props> = ({
     const _onButton = async () => {
         const time = setTimeout(() => setLoading(true), 500)
         const res = await UserRequest.attention({_id: people_id, type: state ? 'noLike' : 'like'})
-        setState(res.data.includes(user_id))
         clearTimeout(time)
         setLoading(false)
+        if (res.state === 'err') {
+            setState(fans.includes(user_id))
+            return
+        }
+        setState(res.data.includes(user_id))
     }
 
     const _onPress = () => {
@@ -70,7 +74,6 @@ const AttentionButton: FC<Props> = ({
         </TouchableNativeFeedback>
     )
 }
-
 
 
 const Wrapper = styled.View`

@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux'
 import styled from 'styled-components/native'
 import IconClose from '../../components/iconfont/IconClose'
 import Button from '../../components/Button'
-import { UserRequest } from '../../utils/request'
+import { QuestionRequest, UserRequest } from '../../utils/request'
 
 const SignIn: FC = () => {
 
@@ -55,6 +55,7 @@ const SignIn: FC = () => {
             value: res.data
         })
         await AsyncStorage.setItem('token',res.token)
+        await UserRequest.uploadToken()
         goBack()
     }
 

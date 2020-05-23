@@ -9,20 +9,23 @@ import html from '../../utils/replyhtml'
 import { DiffTime } from '../../utils/time'
 import { BlurView } from '@react-native-community/blur'
 import Loading from './Loading'
+import BottomBar from './BottomBar'
 
 interface Props {
     state: any,
     replyData: any,
     nextReplyData: any,
     modalRef: any,
-    BottomBarRef: any
+    BottomBarRef: any,
+    likeConfig: any,
+    setLikeConfig: any
 }
 
 
 const screenHeight = Math.round(Dimensions.get('window').height)
 
 
-const Reply: FC<Props> = ({state, replyData, nextReplyData, modalRef, BottomBarRef}) => {
+const Reply: FC<Props> = ({state, replyData, nextReplyData, modalRef, BottomBarRef, likeConfig, setLikeConfig}) => {
     const ref = useRef<any>()
     const viewRef = useRef<any>()
 
@@ -30,43 +33,8 @@ const Reply: FC<Props> = ({state, replyData, nextReplyData, modalRef, BottomBarR
         ref.current.scrollTo({x: 0, y: 0, animated: true})
     }, [replyData])
 
-    const NextReply =() => {
-        if (!nextReplyData) return null
-        return (
-            <NextWrapper>
-                <Top>
-                    <AvararPeople
-                        avatar={nextReplyData.user_id.avatar}
-                        nickname={nextReplyData.user_id.nickname}
-                        text={!!nextReplyData.user_id.one_sentence_introduction.length && nextReplyData.user_id.one_sentence_introduction}
-                    />
-                    <AttentionButton
-                        user_id={state._id}
-                        people_id={nextReplyData.user_id._id}
-                        fans={nextReplyData.user_id.fans}
-                    />
-                </Top>
-                <AutoHeightWebView
-                    source={{
-                        html: html(nextReplyData.content_html, ``),
-                        baseUrl: 'file:///android_asset/web/'
-                    }}
-                    scalesPageToFit={false}
-                    style={{flex: 1}}
-                />
-                <BlurView
-                    style={{position: 'absolute', bottom: 0, right: 0, width: '100%', height: 25, opacity: 0.9}}
-                    blurType="light"
-                    blurAmount={8}
-                    reducedTransparencyFallbackColor="white"
-                />
-            </NextWrapper>
-        )
-    }
-
 
     const _onScroll = ({nativeEvent}: any) => {
-
         const y = nativeEvent.layoutMeasurement.height + nativeEvent.contentOffset.y - viewRef.current.layout.height
         if (y > 0) BottomBarRef.current.setShow(false)
         if (y < 0) BottomBarRef.current.setShow(true)
@@ -75,6 +43,8 @@ const Reply: FC<Props> = ({state, replyData, nextReplyData, modalRef, BottomBarR
     const getViewConfig = ({nativeEvent}: any) => {
         viewRef.current = nativeEvent
     }
+
+    console.log(replyData)
 
     return (
         <ScrollView style={{flex: 1}} ref={ref} onScroll={_onScroll}>
@@ -100,7 +70,7 @@ const Reply: FC<Props> = ({state, replyData, nextReplyData, modalRef, BottomBarR
                                 baseUrl: 'file:///android_asset/web/'
                             }}
                             scalesPageToFit={false}
-                            style={{flex: 1}}
+                            style={{flex: 1,width:'100%'}}
                         />
                         <Comment
                             state={state}
@@ -108,20 +78,60 @@ const Reply: FC<Props> = ({state, replyData, nextReplyData, modalRef, BottomBarR
                             comment_count={replyData.comment_count}
                             modalRef={modalRef}
                         />
+                        <BottomBar
+                            reply_id={replyData._id}
+                            modalRef={modalRef}
+                            comment_count={replyData.comment_count}
+                            borderTop={false}
+                            likeConfig={likeConfig}
+                            setLikeConfig={setLikeConfig}
+                        />
                     </Wrapper>
                 )
             }
-            <NextReply />
+            {
+                nextReplyData && (
+                    <NextWrapper>
+                        <Top>
+                            <AvararPeople
+                                avatar={nextReplyData.user_id.avatar}
+                                nickname={nextReplyData.user_id.nickname}
+                                text={!!nextReplyData.user_id.one_sentence_introduction.length && nextReplyData.user_id.one_sentence_introduction}
+                            />
+                            <AttentionButton
+                                user_id={state._id}
+                                people_id={nextReplyData.user_id._id}
+                                fans={nextReplyData.user_id.fans}
+                            />
+                        </Top>
+                        <AutoHeightWebView
+                            source={{
+                                html: html(nextReplyData.content_html, ``),
+                                baseUrl: 'file:///android_asset/web/'
+                            }}
+                            scalesPageToFit={false}
+                            style={{flex: 1}}
+                        />
+                        <BlurView
+                            style={{position: 'absolute', bottom: 0, right: 0, width: '100%', height: 25, opacity: 0.9}}
+                            blurType="light"
+                            blurAmount={8}
+                            reducedTransparencyFallbackColor="white"
+                        />
+                    </NextWrapper>
+                )
+            }
         </ScrollView>
     )
 }
 
 
 const Wrapper = styled.View`
-padding: 15px 0;
+padding: 15px 0 50px;
 flex: 1;
 min-height: ${screenHeight}px;
 position: relative;
+width: 100%;
 `
 
 const Top = styled.View`
