@@ -78,7 +78,7 @@ const AttentionList: FC = () => {
         )
     }
 
-    const _headerComponet = () => {
+    const _headerComponent = () => {
         return (
             <>
                 <Text style={{fontSize: 12, marginLeft: 15, color: '#808080', marginTop: 10}}>我的关注</Text>
@@ -99,7 +99,7 @@ const AttentionList: FC = () => {
             Request={Request}
             TipsColor='#0084ff'
             TipsTitle='关注已更新'
-            ListHeaderComponent={_headerComponet}
+            ListHeaderComponent={_headerComponent}
         />
     )
 }

@@ -53,4 +53,4 @@ const CommentModal: FC<Props> = ({
 }
 
 
-export default React.memo(CommentModal)
+export default CommentModal

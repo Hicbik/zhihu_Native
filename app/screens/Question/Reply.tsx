@@ -44,8 +44,6 @@ const Reply: FC<Props> = ({state, replyData, nextReplyData, modalRef, BottomBarR
         viewRef.current = nativeEvent
     }
 
-    console.log(replyData)
-
     return (
         <ScrollView style={{flex: 1}} ref={ref} onScroll={_onScroll}>
             {!replyData && <Loading />}

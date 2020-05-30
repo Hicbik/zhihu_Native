@@ -18,6 +18,8 @@ import People from './screens/People'
 import PeopleDeal from './screens/PeopleDeal'
 import ReplyEdit from './screens/ReplyEdit'
 import NewQuestion from './screens/NewQuestion'
+import QuestionDeal from './screens/QuestionDeal'
+import ChatList from './screens/ChatList'
 
 const Stack = createStackNavigator()
 
@@ -43,11 +45,10 @@ const App: FC = () => {
                         <Stack.Navigator
                             screenOptions={{
                                 cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
-                                headerTintColor: '#646464'
+                                headerTintColor: '#646464',
+                                headerTitleStyle: {marginLeft: -20}
                             }}
-
                         >
-
                             <Stack.Screen
                                 name='Index'
                                 component={Index}
@@ -57,8 +58,15 @@ const App: FC = () => {
                             <Stack.Screen
                                 name='Question'
                                 component={Question}
+                            />
+
+                            <Stack.Screen
+                                name='QuestionDeal'
+                                component={QuestionDeal}
                                 options={{
-                                    cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS
+                                    headerStyle: {elevation: 0},
+                                    headerTintColor: '#646464',
+                                    title: ''
                                 }}
                             />
 
@@ -66,10 +74,10 @@ const App: FC = () => {
                                 name='NewQuestion'
                                 component={NewQuestion}
                                 options={{
-                                    cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS
+                                    headerStyle: {backgroundColor: '#fff', elevation: 0},
+                                    title: '',
                                 }}
                             />
-
 
                             <Stack.Screen
                                 name='Search'
@@ -112,6 +120,18 @@ const App: FC = () => {
                                     title: '',
                                 }}
                             />
+
+                            <Stack.Screen
+                                name='ChatList'
+                                component={ChatList}
+                                options={{
+                                    headerTintColor: '#646464',
+                                    title: '',
+                                    cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS
+
+                                }}
+                            />
+
 
                         </Stack.Navigator>
 

@@ -9,6 +9,7 @@ import IconHuabanfuben from '../../components/iconfont/IconHuabanfuben'
 
 import Home from './screens/Home'
 import My from './screens/My'
+import Notice from './screens/Notice'
 
 const Tab = createMaterialBottomTabNavigator()
 
@@ -49,12 +50,12 @@ const Index: FC = () => {
 
             />
             <Tab.Screen
-                name='Home2'
+                name='Notice'
                 options={{
                     title: '消息',
                     tabBarIcon: ({color}) => <IconTongzhi color={color} />
                 }}
-                component={Demo}
+                component={Notice}
             />
             <Tab.Screen
                 name='My'

@@ -49,7 +49,6 @@ const HomeModalMain: FC<Props> = ({setVisible, visible}) => {
     }
 
     const FocusQuestion = ({_id, type, index}: any) => async () => {
-
         const res = await QuestionRequest.focus({_id, type})
         setQuestionData(questionData.map(
             (value, i) => i === index ? {...value, focus_problem: [...res.data.focus_problem]} : value)
@@ -183,4 +182,4 @@ align-items: center;
 `
 
 
-export default HomeModalMain
+export default React.memo(HomeModalMain)

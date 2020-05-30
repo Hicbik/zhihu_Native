@@ -9,16 +9,18 @@ const InitState = {
     },
     online_users: 0,
     chat: 0,
-    chatList: [{
-        user_id: '666',
-        chat_id: null,
-        nickname: '智慧女神',
-        avatar: 'https://p.ananas.chaoxing.com/star3/400_400c/c9ff4ff44d9355013346658e3c0ad714.png',
-        messageList: [{type: 'he', message: '欢迎来到知乎!', time: 0}],
-        newMsg: 0,
-    }],
+    chatList: [
+        {
+            user_id: '666',
+            chat_id: null,
+            nickname: '智慧女神',
+            avatar: 'https://p.ananas.chaoxing.com/star3/400_400c/c9ff4ff44d9355013346658e3c0ad714.png',
+            messageList: [{type: 'he', message: '欢迎来到知乎!', time: 0},{type: 'my', message: '欢迎来到知乎!', time: 0}],
+            newMsg: 0,
+        }
+    ],
     win: null,
-    err:false
+    err: false
 }
 
 export default (state: NoticeProps = InitState, action: any): NoticeProps => {
@@ -26,7 +28,7 @@ export default (state: NoticeProps = InitState, action: any): NoticeProps => {
         case 'notice/changeErr':
             return {
                 ...state,
-                err:action.value
+                err: action.value
             }
         case 'notice/6666': {
             return {

@@ -4,7 +4,7 @@ import { ToastAndroid } from 'react-native'
 import { LinkToSingIn } from './navigation'
 import store from '../store'
 
-axios.defaults.baseURL = 'http://192.168.31.218:7001/'
+axios.defaults.baseURL = 'http://192.168.137.1:7001/'
 
 axios.interceptors.request.use(
     async config => {
@@ -145,8 +145,8 @@ export class QuestionRequest extends Base {
         return axios.get(this.url + 'findOne', {params: {_id}})
     }
 
-    static getReply ({question_id, reply_id}: { question_id: string | undefined, reply_id?: string }) {
-        return axios.get(this.url + 'getReply', {params: {question_id, reply_id}})
+    static getReply ({question_id, reply_id, page}: { question_id: string | undefined, reply_id?: string, page: number }) {
+        return axios.get(this.url + 'getReply', {params: {question_id, reply_id, page}})
     }
 
     static getReplyNin ({question_id, reply_id, page}: { question_id: string, reply_id: string, page: number }) {

@@ -1,0 +1,29 @@
+/* tslint:disable */
+/* eslint-disable */
+
+import React, { FunctionComponent } from 'react';
+import { ViewProps } from 'react-native';
+import { Svg, GProps, Path } from 'react-native-svg';
+import { getIconColor } from './helper';
+
+interface Props extends GProps, ViewProps {
+  size?: number;
+  color?: string | string[];
+}
+
+const IconZantong: FunctionComponent<Props> = ({ size, color, ...rest }) => {
+  return (
+    <Svg viewBox="0 0 1204 1024" width={size} height={size} {...rest}>
+      <Path
+        d="M1196.032 349.063529c0-187.151059-153.359059-339.847529-341.413647-339.847529a337.92 337.92 0 0 0-244.796235 103.243294A340.088471 340.088471 0 0 0 364.965647 9.216C176.911059 9.216 23.491765 161.912471 23.491765 349.063529c0 86.979765 32.828235 168.96 92.762353 232.146824 1.264941 1.204706 1.927529 2.469647 3.19247 3.734588l4.99953 4.99953 432.308706 411.76847c13.854118 13.793882 32.768 21.263059 53.007058 21.263059 20.178824 0 39.755294-8.131765 54.211765-21.865412 13.854118-12.528941 354.063059-334.185412 432.308706-411.166117l3.794823-3.734589a339.546353 339.546353 0 0 0 95.894589-237.146353zM365.568 180.043294a174.561882 174.561882 0 0 0-174.802824 174.019765 26.503529 26.503529 0 0 1-53.007058 0c0-124.566588 102.219294-225.882353 227.207529-225.882353a26.503529 26.503529 0 0 1 26.503529 26.262588 25.901176 25.901176 0 0 1-25.901176 25.6z"
+        fill={getIconColor(color, 0, '#333333')}
+      />
+    </Svg>
+  );
+};
+
+IconZantong.defaultProps = {
+  size: 18,
+};
+
+export default IconZantong;

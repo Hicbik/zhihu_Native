@@ -4,7 +4,6 @@
         <meta charset="UTF-8">
         <meta name="viewport"
               content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0,viewport-fit=cover">
-
         <link href="dracula.min.css" rel="stylesheet">
         <script src="highlight.min.js"></script>
         <link href="quill.css" rel="stylesheet">
@@ -24,7 +23,6 @@
             .ql-container.ql-snow {
                 border: none;
                 min-height: 300px;
-                padding-top: 40px;
                 padding-bottom: 30px;
             }
 
@@ -35,34 +33,29 @@
                 border-top: 1px solid #ebebeb;
                 border-bottom: 1px solid #ebebeb;
                 position: fixed;
-                top: 0;
+                bottom: 0;
                 left: 0;
                 z-index: 6666;
                 background-color: #fff;
             }
 
+            .ql-toolbar.ql-snow .ql-formats {
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            .ql-snow .ql-picker.ql-expanded .ql-picker-options {
+                top: -230px;
+            }
 
             .ql-editor {
                 height: initial;
             }
 
-            #number {
-                position: fixed;
-                bottom: 10px;
-                right: 10px;
-                font-size: 16px;
-                color: #999;
-                width: 30px;
-                height: 30px;
-                background-color: #fff;
-                text-align: center;
-                line-height: 30px;
-            }
         </style>
     </head>
     <body>
         <div id="editor"></div>
-        <div id="number">0</div>
 
         <script>
 
@@ -70,7 +63,7 @@
             let upLoadImg = ({ file }) => {
                 return new Promise((resolve,reject) => {
                     let token = window.token
-                    let key = `reply/${Date.now()}`
+                    let key = `question/${Date.now()}`
                     let config = {
                         useCdnDomain:true,
                         region:qiniu.region.z0
@@ -94,7 +87,6 @@
                     observable.subscribe(observe)
                 })
             }
-
 
             let quill = new Quill('#editor',{
                 theme:'snow',
@@ -137,16 +129,10 @@
                     syntax:true
 
                 },
-                placeholder:' 写回答...'
+                placeholder:' 对问题补充说明，可以更快获得解答(不写也么问题!) '
             })
 
-
-            let numberDiv = document.getElementById('number')
-            quill.on('editor-change',() => {
-                numberDiv.innerText = quill.getLength() - 1
-            })
-
-            document.querySelector('.ql-editor').style.maxHeight = document.documentElement.clientHeight - 80 + 'px'
+            document.querySelector('.ql-editor').style.maxHeight = document.documentElement.clientHeight - 50 + 'px'
 
             window.document.addEventListener('message',function (event) {
                 let data = JSON.parse(event.data)
@@ -164,7 +150,6 @@
             window.addEventListener('resize',() => {
                 document.querySelector('.ql-editor').style.maxHeight = document.documentElement.clientHeight - 50 + 'px'
             })
-
         </script>
     </body>
 </html>

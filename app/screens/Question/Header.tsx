@@ -1,27 +1,33 @@
 import React, { FC } from 'react'
-import { Dimensions, TouchableOpacity } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
+import { Dimensions, TouchableOpacity, View } from 'react-native'
 import styled from 'styled-components/native'
 import IconArrowRight from '../../components/iconfont/IconArrowRight'
+import { LinkToQuestionDeal, LinkToReplyEdit } from '../../utils/LinkTo'
 
 const screenWidth = Math.round(Dimensions.get('window').width)
 
-
 interface Props {
     title: string,
-    reply_count: number
+    reply_count: number,
+    question_id: string
 }
 
-const Header: FC<Props> = ({title, reply_count}) => {
+const Header: FC<Props> = ({title, reply_count, question_id}) => {
+
+    const LinkTo = () => {
+        LinkToQuestionDeal({question_id})
+    }
 
     return (
-        <Wrapper>
-            <Title ellipsizeMode='tail' numberOfLines={1}>
-                {title}
-            </Title>
+        <Wrapper onPress={LinkTo}>
             <View>
-                <Tips>知乎·全部 {reply_count} 个回答 </Tips>
-                <IconArrowRight color='#999' size={14} />
+                <Title ellipsizeMode='tail' numberOfLines={1}>
+                    {title}
+                </Title>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <Tips>知乎·全部 {reply_count} 个回答 </Tips>
+                    <IconArrowRight color='#999' size={14} />
+                </View>
             </View>
         </Wrapper>
     )
@@ -34,16 +40,14 @@ interface RightProps {
     seeMyReply: ({reply_id}: { reply_id: string }) => any
 }
 
-const Right: FC<RightProps> = ({title, question_id, myReply,seeMyReply}) => {
-
-    const navigation = useNavigation()
+const Right: FC<RightProps> = ({title, question_id, myReply, seeMyReply}) => {
 
     const LinkTo = () => {
 
         if (myReply) {
-            seeMyReply({reply_id:myReply.reply})
+            seeMyReply({reply_id: myReply.reply})
         } else {
-            navigation.navigate('ReplyEdit', {question_id, title})
+            LinkToReplyEdit({question_id, title})
         }
     }
 
@@ -54,19 +58,14 @@ const Right: FC<RightProps> = ({title, question_id, myReply,seeMyReply}) => {
     )
 }
 
-const Wrapper = styled.View`
-max-width: ${screenWidth * 0.7}px;
-margin-left: -30px;
+const Wrapper = styled.TouchableOpacity`
+max-width: ${screenWidth * 0.67}px;
+margin-left: -20px;
 `
 const Title = styled.Text`
 color: #1a1a1a;
 font-size: 16px;
 font-weight: bold;
-`
-
-const View = styled.View`
-flex-direction: row;
-align-items: center;
 `
 
 const Tips = styled.Text`

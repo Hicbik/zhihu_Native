@@ -1,9 +1,9 @@
 import React, { FC, useCallback } from 'react'
 import { TouchableNativeFeedback, View } from 'react-native'
-import { useNavigation } from '@react-navigation/native'
 import styled from 'styled-components/native'
 import ListBase, { ItemWrapper, Image } from '../../../../components/ListBase'
 import { QuestionRequest } from '../../../../utils/request'
+import { LinkToQuestion } from '../../../../utils/LinkTo'
 import IconGengduo from '../../../../components/iconfont/IconGengduo'
 import QuestionTitle from '../../../../components/QuestionTitle'
 import ReplyContent from '../../../../components/ReplyContent'
@@ -11,23 +11,15 @@ import ReplyContent from '../../../../components/ReplyContent'
 
 const RecommendList: FC = () => {
 
-    const navigation = useNavigation()
-
     const Request = useCallback(({page}: { page: number }) => {
         return QuestionRequest.RecommendListData({page})
     }, [])
 
-    const LinkTo = (props: { _id: string, reply_id: string }) => () => {
-        navigation.navigate('Question', {
-            _id: props._id,
-            reply_id: props.reply_id
-        })
-    }
 
     const _renderItem = ({item}: { item: any }) => {
         return (
             <TouchableNativeFeedback
-                onPress={LinkTo({
+                onPress={LinkToQuestion({
                     _id: item.question_id._id,
                     reply_id: item._id
                 })}

@@ -5,6 +5,7 @@ import Search from './Search'
 import HotList from './HotList'
 import AttentionList from './AttentionList'
 import HomeModal from './HomeModal'
+import { Dimensions } from 'react-native'
 
 const Tab = createMaterialTopTabNavigator()
 
@@ -26,6 +27,7 @@ const Home: FC = () => {
                     tabStyle: {height: 45}
                 }}
                 initialRouteName='Recommend'
+                initialLayout={{ width: Dimensions.get('window').width }}
             >
                 <Tab.Screen
                     name='Attention'

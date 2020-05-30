@@ -22,12 +22,13 @@ const Question: FC = () => {
     const bottomBar = useRef<any>()
     const modalRef = useRef<any>()
 
-
     useEffect(() => {
         ;(async () => {
             const res = await QuestionRequest.findOne({_id: params._id})
             navigation.setOptions({
-                headerTitle: () => <Header title={res.data.title} reply_count={res.data.reply_count} />,
+                headerTitle: () => (
+                    <Header title={res.data.title} reply_count={res.data.reply_count} question_id={res.data._id} />
+                ),
                 headerRight: () => (
                     <Right
                         title={res.data.title}
@@ -40,7 +41,7 @@ const Question: FC = () => {
         })()
         ;(async () => {
             const [res1, res2] = await Promise.all([
-                QuestionRequest.getReply({question_id: params._id, reply_id: params.reply_id}),
+                QuestionRequest.getReply({question_id: params._id, reply_id: params.reply_id, page: 1}),
                 QuestionRequest.getReplyNin({question_id: params._id, reply_id: params.reply_id, page})
             ])
             setPage(page + 1)
@@ -66,7 +67,7 @@ const Question: FC = () => {
 
     const _seeMyReply = async ({reply_id}: { reply_id: string }) => {
         const [res1, res2] = await Promise.all([
-            QuestionRequest.getReply({question_id: params._id, reply_id}),
+            QuestionRequest.getReply({question_id: params._id, reply_id, page: 1}),
             QuestionRequest.getReplyNin({question_id: params._id, reply_id, page: 1})
         ])
         setPage(2)
@@ -75,7 +76,7 @@ const Question: FC = () => {
         Animated.timing(y, {useNativeDriver: true, toValue: 999, duration: 0}).start(() => {
             Animated.timing(y, {useNativeDriver: true, toValue: 0, duration: 250}).start()
         })
-    } 
+    }
 
     const _onNextReply = async () => {
         if (index + 1 === replyList.length) {

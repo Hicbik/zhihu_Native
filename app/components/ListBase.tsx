@@ -13,6 +13,7 @@ interface Props {
     ListHeaderComponent?: any,
     cRef?: any,
     Refresh?: boolean,
+    onScroll?: (event: { nativeEvent: any }) => void
 }
 
 
@@ -73,6 +74,7 @@ const ListBase: FC<Props> = ({
     ListHeaderComponent,
     cRef,
     Refresh = true,
+    onScroll
 }) => {
     const {data, refreshing, showTips, isLoad, _onEndReached, _onRefresh, _close} = useList({Request})
 
@@ -145,6 +147,7 @@ const ListBase: FC<Props> = ({
                     renderItem={renderItem}
                     keyExtractor={_keyExtractor}
                     removeClippedSubviews={false}
+                    onScroll={onScroll}
                 />
             </Wrapper>
         </Fragment>
