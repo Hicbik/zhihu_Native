@@ -1,11 +1,8 @@
 module.exports = {
     presets:['module:metro-react-native-babel-preset'],
-    plugins:[
-        ['import',{ libraryName:'@ant-design/react-native' }]
-    ],
     env:{
         production:{
-            plugins:['transform-remove-console']
+            plugins:['transform-remove-console','react-native-paper/babel']
         }
     }
 }

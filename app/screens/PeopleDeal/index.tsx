@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC,useCallback } from 'react'
 import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native'
 import ReplyList from './ReplyList'
 import QuestionList from './QuestionList'
@@ -12,9 +12,11 @@ const PeopleDeal: FC = () => {
     const navigation = useNavigation()
     const params = useRoute<any>().params
 
-    useFocusEffect(() => {
-        navigation.setOptions({title: params.title})
-    })
+    useFocusEffect(
+        useCallback(()=>{
+            navigation.setOptions({title: params.title})
+        },[])
+    )
 
 
     return (

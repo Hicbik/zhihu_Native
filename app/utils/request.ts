@@ -97,7 +97,17 @@ export class UserRequest extends Base {
             axios.get(this.url + 'attention', {params: {_id, type}})
         ))
     }
+    static getDynamic ({user_id, page}: { user_id: string, page: number }) {
+        return axios.get(this.url + 'getDynamic', {params: {user_id, page}})
+    }
 
+    static getNotice ({type, page}: { type: string, page: number }) {
+        return axios.get(this.url + 'getNotice', {params: {type, page}})
+    }
+
+    static getNoticeDynamic ({page}: { page: number }) {
+        return axios.get(this.url + 'getNoticeDynamic', {params: {page}})
+    }
 
 }
 

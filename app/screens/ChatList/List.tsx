@@ -1,6 +1,7 @@
-import React, { FC } from 'react'
-import { FlatList } from 'react-native'
+import React, { FC, useEffect, useRef } from 'react'
+import { FlatList, View } from 'react-native'
 import styled from 'styled-components/native'
+import { ChatTime, messageTime } from '../../utils/time'
 
 interface Props {
     data: {
@@ -12,7 +13,13 @@ interface Props {
     user: any
 }
 
-const List: FC<Props> = ({data,user}) => {
+const List: FC<Props> = ({data, user}) => {
+
+    const listRef = useRef<any>()
+
+    useEffect(() => {
+        listRef.current.scrollToEnd()
+    }, [data.messageList.length])
 
     const HeMessage = ({message}: { message: string }) => {
         return (
@@ -38,11 +45,16 @@ const List: FC<Props> = ({data,user}) => {
         )
     }
 
-    const _renderItem = ({item}: { item: any }) => {
+    const _renderItem = ({item, index}: { item: any, index: number }) => {
         return (
             <>
-                {item.type === 'he' && <HeMessage message={'asd'} />}
-                {item.type === 'my' && <MyMessage message={'阿萨大'} />}
+                {
+                    messageTime(data.messageList[index === 0 ? 0 : index - 1].time, item.time) && (
+                        <TimeText>{ChatTime(item.time)}</TimeText>
+                    )
+                }
+                {item.type === 'he' && <HeMessage message={item.message} />}
+                {item.type === 'my' && <MyMessage message={item.message} />}
             </>
         )
     }
@@ -53,8 +65,10 @@ const List: FC<Props> = ({data,user}) => {
         <FlatList
             data={data.messageList}
             renderItem={_renderItem}
-            style={{padding: 15}}
+            style={{flex: 1, paddingLeft: 15, paddingRight: 15}}
             keyExtractor={_keyExtractor}
+            ref={listRef}
+            ListFooterComponent={<View style={{height: 200}} />}
         />
     )
 }
@@ -67,7 +81,7 @@ border-radius: 20px;
 `
 const Wrapper = styled.View`
 flex-direction: row;
-margin-bottom: 10px;
+margin-top: 10px;
 width: 100%;
 `
 const Massage = styled.View`
@@ -81,7 +95,6 @@ max-width: 80%;
 const MsgText = styled.Text`
 color: #1a1a1a;
 font-size: 14px;
-text-align:left;
 `
 const Tips = styled.View`
 width: 10px;
@@ -101,5 +114,11 @@ right: -4px;
 transform: rotate(45deg);
 background-color: #0084ff;
 `
+const TimeText = styled.Text`
+color: #999;
+font-size: 12px;
+text-align:center;
+margin-top: 20px;
+`
 
-export default List
+export default React.memo(List)

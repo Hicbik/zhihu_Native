@@ -24,6 +24,9 @@ const Demo = () => {
 const Index: FC = () => {
 
     const state = useTypedSelector(state => state.User.isLogin)
+    const NoticeState = useTypedSelector(state => state.Notice)
+
+    const showBadge = !!(NoticeState.full.attention + NoticeState.full.agree + NoticeState.full.news + NoticeState.chat)
 
     return (
         <Tab.Navigator
@@ -53,7 +56,8 @@ const Index: FC = () => {
                 name='Notice'
                 options={{
                     title: '消息',
-                    tabBarIcon: ({color}) => <IconTongzhi color={color} />
+                    tabBarIcon: ({color}) => <IconTongzhi color={color} />,
+                    tabBarBadge: showBadge,
                 }}
                 component={Notice}
             />

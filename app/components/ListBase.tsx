@@ -13,7 +13,8 @@ interface Props {
     ListHeaderComponent?: any,
     cRef?: any,
     Refresh?: boolean,
-    onScroll?: (event: { nativeEvent: any }) => void
+    onScroll?: (event: { nativeEvent: any }) => void,
+    footStyle?:any
 }
 
 
@@ -74,7 +75,8 @@ const ListBase: FC<Props> = ({
     ListHeaderComponent,
     cRef,
     Refresh = true,
-    onScroll
+    onScroll,
+    footStyle
 }) => {
     const {data, refreshing, showTips, isLoad, _onEndReached, _onRefresh, _close} = useList({Request})
 
@@ -98,7 +100,7 @@ const ListBase: FC<Props> = ({
     const _ListFooterComponent = () => {
         if (isLoad && !!data.length) {
             return (
-                <ItemWrapper style={{elevation: 1, paddingTop: 25, marginBottom: 10}}>
+                <ItemWrapper style={{elevation: 1, paddingTop: 25, marginBottom: 10,...footStyle}}>
                     <Skeleton />
                 </ItemWrapper>
             )

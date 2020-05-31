@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from 'react'
+import React, { FC, useState, useEffect, useCallback } from 'react'
 import { useRoute, useFocusEffect } from '@react-navigation/native'
 import { StatusBar, View } from 'react-native'
 import { UserRequest } from '../../utils/request'
@@ -15,9 +15,10 @@ const People: FC = () => {
     const isMy = state === data._id
 
     useFocusEffect(() => {
-        StatusBar.setBackgroundColor('#b8c0d7')
-        return () => StatusBar.setBackgroundColor('#ebeff2')
-    })
+            StatusBar.setBackgroundColor('#b8c0d7')
+            return () => StatusBar.setBackgroundColor('#ebeff2')
+        }
+    )
 
     useEffect(() => {
         ;(async () => {
@@ -31,8 +32,8 @@ const People: FC = () => {
 
     return (
         <View style={{flex: 1, backgroundColor: '#fff'}}>
-            <Header data={data} isMy={isMy}/>
-            <PeopleTab data={data} isMy={isMy}/>
+            <Header data={data} isMy={isMy} />
+            <PeopleTab data={data} isMy={isMy} />
         </View>
     )
 }

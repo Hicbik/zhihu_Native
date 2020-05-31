@@ -1,11 +1,27 @@
 import React, { FC, useState } from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import styled from 'styled-components/native'
+import { NoticeIo } from '../../utils/io'
 
-const Input: FC = () => {
+interface Props {
+    people_id: string,
+    user: any
+}
+
+
+const Input: FC<Props> = ({people_id,user}) => {
 
     const [value, setValue] = useState('')
 
+
+    const _onSend = () => {
+        NoticeIo.SendChat({
+            send_user: {_id: user._id, avatar: user.avatar, nickname: user.nickname},
+            receive_user_id: people_id,
+            message: value
+        })
+        setValue('')
+    }
 
     return (
         <Wrapper>
@@ -16,7 +32,7 @@ const Input: FC = () => {
                 multiline
             />
             <SendView>
-                <TouchableOpacity disabled={!value.length}>
+                <TouchableOpacity disabled={!value.length} onPress={_onSend}>
                     <View style={{height: 50, justifyContent: 'center', opacity: !value.length ? 0.3 : 1}}>
                         <Text>发送</Text>
                     </View>

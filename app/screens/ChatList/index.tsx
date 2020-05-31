@@ -1,5 +1,5 @@
-import React, { FC, useEffect } from 'react'
-import { useRoute, useNavigation } from '@react-navigation/native'
+import React, { FC, useCallback } from 'react'
+import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/native'
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components/native'
 import { useTypedSelector } from '../../store/reducer'
@@ -16,29 +16,31 @@ const ChatList: FC = () => {
 
     const index = chatList.findIndex(value => value.user_id === params.user_id)
 
-    useEffect(() => {
-        navigation.setOptions({title: chatList[index].nickname})
-        dispatch({
-            type: 'notice/changeWin',
-            value: params.user_id
-        })
-        dispatch({
-            type: 'notice/delNewMsg',
-            user_id: params.user_id
-        })
-        return () => {
+    useFocusEffect(
+        useCallback(() => {
+            navigation.setOptions({title: chatList[index].nickname})
             dispatch({
                 type: 'notice/changeWin',
-                value: null
+                value: params.user_id
             })
-        }
-    }, [params.user_id])
+            dispatch({
+                type: 'notice/delNewMsg',
+                user_id: params.user_id
+            })
+            return () => {
+                dispatch({
+                    type: 'notice/changeWin',
+                    value: null
+                })
+            }
+        }, [])
+    )
 
 
     return (
         <Wrapper>
             <List data={chatList[index]} user={state} />
-            <Input />
+            <Input people_id={chatList[index].user_id} user={state} />
         </Wrapper>
     )
 }

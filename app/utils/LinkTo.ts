@@ -21,3 +21,11 @@ export const LinkToReplyEdit = (props: { question_id: string, title: string }) =
 export const ListToChatList = (props: { user_id: string }) => {
     navigation.current.navigate('ChatList', {user_id: props.user_id})
 }
+
+export const LinkToNoticeDeal = (props: { type: string }) => () => {
+    navigation.current.navigate('NoticeDeal', {type: props.type})
+}
+
+export const LinkToPeople = (props: { _id: string }) => {
+    navigation.current.navigate('People', {_id: props._id})
+}

@@ -15,7 +15,7 @@ const InitState = {
             chat_id: null,
             nickname: '智慧女神',
             avatar: 'https://p.ananas.chaoxing.com/star3/400_400c/c9ff4ff44d9355013346658e3c0ad714.png',
-            messageList: [{type: 'he', message: '欢迎来到知乎!', time: 0},{type: 'my', message: '欢迎来到知乎!', time: 0}],
+            messageList: [{type: 'he', message: '欢迎来到知乎!', time: 0}],
             newMsg: 0,
         }
     ],

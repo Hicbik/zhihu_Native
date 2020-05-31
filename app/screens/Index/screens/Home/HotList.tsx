@@ -96,6 +96,7 @@ const HotList: FC = () => {
                 TipsColor='#f9970e'
                 TipsTitle='热榜已更新'
                 cRef={ListRef}
+                footStyle={{ marginTop: 0}}
             />
         </>
     )
@@ -133,7 +134,7 @@ color: ${(props: { index: number }) => props.index < 3 ? '#fff' : '#999'};
 margin-right: 15px;
 font-size: 16px;
 background-color: ${(props: { index: number }) => props.index < 3 ? ['#ef4744', '#ff8604', '#f1b96e'][props.index] : 'transparent'};
-width: 20px;
+width: 30px;
 text-align:center;
 border-radius: 4px;
 `

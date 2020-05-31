@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC ,useCallback} from 'react'
 import { StatusBar } from 'react-native'
 import { useFocusEffect } from '@react-navigation/native'
 import { useTypedSelector } from '../../../../store/reducer'
@@ -8,10 +8,12 @@ const My: FC = () => {
 
     const state = useTypedSelector(state => state.User)
 
-    useFocusEffect(() => {
-        StatusBar.setBackgroundColor('#158dfe')
-        return () => StatusBar.setBackgroundColor('#ebeff2')
-    })
+    useFocusEffect(
+        useCallback(()=>{
+            StatusBar.setBackgroundColor('#158dfe')
+            return () => StatusBar.setBackgroundColor('#ebeff2')
+        },[])
+    )
 
 
     return (

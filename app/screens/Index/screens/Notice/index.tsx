@@ -22,6 +22,7 @@ const Notice: FC = () => {
                 style:{height:55,justifyContent: 'center'}
             }}
             initialLayout={{ width: Dimensions.get('window').width }}
+            initialRouteName='Message'
         >
             <Tab.Screen
                 name='Dynamic'
@@ -34,7 +35,7 @@ const Notice: FC = () => {
                 name='Message'
                 component={Message}
                 options={{
-                    title: '消息'
+                    title: '通知'
                 }}
             />
         </Tab.Navigator>

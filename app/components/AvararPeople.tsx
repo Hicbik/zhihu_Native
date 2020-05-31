@@ -1,23 +1,26 @@
 import React, { FC } from 'react'
-import { View } from 'react-native'
+import { View, TouchableWithoutFeedback } from 'react-native'
 import styled from 'styled-components/native'
 
 interface Props {
     avatar: string,
     nickname: string,
     text?: string,
-    style?: any
+    style?: any,
+    onPress?:()=>any
 }
 
-const AvararPeople: FC<Props> = ({avatar, nickname, text, style}) => {
+const AvararPeople: FC<Props> = ({avatar, nickname, text, style,onPress}) => {
     return (
-        <Wrapper style={style}>
-            <Avatar source={{uri: avatar}} />
-            <View style={{justifyContent: 'center'}}>
-                <AuthorText>{nickname}</AuthorText>
-                {text && <AuthorText style={{color: '#b0b0b0', fontSize: 12}}>{text}</AuthorText>}
-            </View>
-        </Wrapper>
+        <TouchableWithoutFeedback onPress={onPress}>
+            <Wrapper style={style}>
+                <Avatar source={{uri: avatar}} />
+                <View style={{justifyContent: 'center'}}>
+                    <AuthorText>{nickname}</AuthorText>
+                    {text && <AuthorText style={{color: '#b0b0b0', fontSize: 12}}>{text}</AuthorText>}
+                </View>
+            </Wrapper>
+        </TouchableWithoutFeedback>
     )
 }
 
