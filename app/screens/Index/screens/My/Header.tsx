@@ -1,7 +1,8 @@
 import React, { FC } from 'react'
 import LinearGradient from 'react-native-linear-gradient'
 import styled from 'styled-components/native'
-import { View, TouchableHighlight, TouchableWithoutFeedback } from 'react-native'
+import { View, TouchableWithoutFeedback } from 'react-native'
+import { Button } from 'react-native-paper'
 import IconArrowRight from '../../../../components/iconfont/IconArrowRight'
 import SearchInput from './SearchInput'
 import { useNavigation } from '@react-navigation/native'
@@ -14,7 +15,6 @@ interface Props {
 const Header: FC<Props> = ({state}) => {
     const navigation = useNavigation()
 
-
     const LinkTo = (name: string, args?: object) => () => {
         navigation.navigate(name, {...args})
     }
@@ -26,7 +26,7 @@ const Header: FC<Props> = ({state}) => {
                 {
                     state.isLogin ? (
                         <TouchableWithoutFeedback onPress={LinkTo('People', {_id: state._id})}>
-                            <People >
+                            <People>
                                 <Avatar source={{uri: state.avatar}} />
                                 <View>
                                     <Text>{state.nickname}</Text>
@@ -41,28 +41,16 @@ const Header: FC<Props> = ({state}) => {
                     ) : (
                         <LoginWrapper>
                             <Text>登录知乎，体验更多功能!</Text>
-                            <TouchableHighlight onPress={LinkTo('SignIn')} style={{borderRadius: 5, margin: 5}}>
-                                <Button>登录</Button>
-                            </TouchableHighlight>
+                            <Button
+                                onPress={LinkTo('SignIn')}
+                                mode='contained'
+                                contentStyle={{paddingLeft: 30, paddingRight: 30}}
+                                color='#0084ff'
+                                style={{marginTop: 15}}
+                            >登录</Button>
                         </LoginWrapper>
                     )
                 }
-                <InfoWrapper>
-                    <View style={{alignItems: 'center'}}>
-                        <Text>{state.attention_count || 0}</Text>
-                        <Text style={{fontSize: 14}}>我的关注</Text>
-                    </View>
-                    <Line />
-                    <View style={{alignItems: 'center'}}>
-                        <Text>42</Text>
-                        <Text style={{fontSize: 14}}>收藏夹</Text>
-                    </View>
-                    <Line />
-                    <View style={{alignItems: 'center'}}>
-                        <Text>42</Text>
-                        <Text style={{fontSize: 14}}>最近游览</Text>
-                    </View>
-                </InfoWrapper>
             </PeopleWrapper>
         </Wrapper>
     )
@@ -77,18 +65,8 @@ position: relative;
 `
 const LoginWrapper = styled.View`
 align-items: center;
-border-bottom-width: 1px;
-border-bottom-color: #ebebeb;
 padding-bottom: 5px;
 margin-bottom: 10px;
-`
-
-const Button = styled.Text`
-background-color: #0084ff;
-color: #fff;
-font-size: 16px;
-padding: 8px 40px;
-border-radius: 5px;
 `
 
 const PeopleWrapper = styled.View`
@@ -98,7 +76,7 @@ left: 15px;
 background-color: #fff;
 border-radius: 15px;
 width: 100%;
-padding: 10px 15px;
+padding: 20px 15px;
 `
 
 const People = styled.View`

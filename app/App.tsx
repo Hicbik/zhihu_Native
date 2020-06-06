@@ -20,6 +20,7 @@ import NewQuestion from './screens/NewQuestion'
 import QuestionDeal from './screens/QuestionDeal'
 import ChatList from './screens/ChatList'
 import NoticeDeal from './screens/NoticeDeal'
+import PeopleEdit from './screens/PeopleEdit'
 
 const Stack = createStackNavigator()
 
@@ -92,7 +93,7 @@ const App: FC = () => {
                             component={Search}
                             options={{
                                 headerShown: false,
-                                cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid
+                                cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
                             }}
                         />
 
@@ -101,6 +102,8 @@ const App: FC = () => {
                             component={SignIn}
                             options={{
                                 headerShown: false,
+                                cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid
+
                             }}
                         />
 
@@ -118,6 +121,14 @@ const App: FC = () => {
                         <Stack.Screen
                             name='PeopleDeal'
                             component={PeopleDeal}
+                        />
+
+                        <Stack.Screen
+                            name='PeopleEdit'
+                            component={PeopleEdit}
+                            options={{
+                                title: '编辑个人资料'
+                            }}
                         />
 
                         <Stack.Screen
@@ -151,7 +162,6 @@ const App: FC = () => {
                                 headerStyle: {elevation: 0, borderBottomColor: '#ebebeb', borderBottomWidth: 1}
                             }}
                         />
-
 
                     </Stack.Navigator>
 

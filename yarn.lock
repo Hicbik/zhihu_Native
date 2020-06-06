@@ -6198,6 +6198,11 @@ react-native-vector-icons@^6.6.0:
     prop-types "^15.6.2"
     yargs "^13.2.2"
 
+react-native-waterflow-list@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.npm.taobao.org/react-native-waterflow-list/download/react-native-waterflow-list-1.1.0.tgz#95c442187c38e8dad7d8ce6a94e45c361e766709"
+  integrity sha1-lcRCGHw46NrX2M5qlORcNh52Zwk=
+
 react-native-webview@^9.4.0:
   version "9.4.0"
   resolved "https://registry.npm.taobao.org/react-native-webview/download/react-native-webview-9.4.0.tgz#108da34a6c7e1c032dcabc942b7e4947ca1d8028"

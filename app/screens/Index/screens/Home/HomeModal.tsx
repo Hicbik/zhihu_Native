@@ -25,6 +25,7 @@ const HomeModal: FC<Props> = ({cRef}) => {
             propagateSwipe
             backdropOpacity={1}
             onBackButtonPress={()=>setVisible(false)}
+            backdropTransitionOutTiming={0}
             // @ts-ignore
             statusBarTranslucent
             customBackdrop={
@@ -36,7 +37,7 @@ const HomeModal: FC<Props> = ({cRef}) => {
                 />
             }
         >
-            <HomeModalMain setVisible={setVisible} visible={visible}/>
+            <HomeModalMain setVisible={setVisible}/>
         </Modal>
     )
 }

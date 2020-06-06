@@ -1,19 +1,40 @@
 import React, { FC } from 'react'
-import { View, Text } from 'react-native'
+import { View, Text, TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
+import { LinkToPeopleEdit, LinkToSignIn, ListToChatList } from '../../utils/LinkTo'
+import { useTypedSelector } from '../../store/reducer'
+import { useDispatch } from 'react-redux'
 import Button from '../../components/Button'
 import IconSanjiaoxing from '../../components/iconfont/IconSanjiaoxing'
 import IconNv from '../../components/iconfont/IconNv'
 import IconTubiaozhizuomoban from '../../components/iconfont/IconTubiaozhizuomoban'
+import IconSixin1 from '../../components/iconfont/IconSixin1'
+import AttentionButton from '../../components/AttentionButton'
+
+
 
 interface Props {
     data: any,
-    isMy: boolean
+    isMy: boolean,
+    state:any
 }
 
 
-const Header: FC<Props> = ({data, isMy}) => {
+const Header: FC<Props> = ({data, isMy,state}) => {
+    const chatList = useTypedSelector(state => state.Notice.chatList)
+    const dispatch = useDispatch()
 
+    const _ListToChatList = ()=>{
+        if (!state.isLogin) return LinkToSignIn()
+        const index = chatList.findIndex(value => value.user_id === data._id)
+        if (index === -1) {
+            dispatch({
+                type: 'notice/addChatPeople',
+                value: [...chatList, {user_id: data._id, avatar:data.avatar, nickname:data.nickname, messageList: []}],
+            })
+        }
+        ListToChatList({user_id:data._id})
+    }
 
     return (
         <Wrapper>
@@ -26,7 +47,18 @@ const Header: FC<Props> = ({data, isMy}) => {
                         </Sex>
                     </AvatarWrapper>
                     <View style={{flexDirection: 'row', alignItems: 'flex-end', marginLeft: 'auto'}}>
-                        <Button onPress={() => 1} style={{padding: 999}}>编辑资料</Button>
+                        {
+                            isMy ? (
+                                <Button onPress={LinkToPeopleEdit} style={{padding: 999}}>编辑资料</Button>
+                            ) : (
+                                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                    <AttentionButton user_id={state._id} people_id={data._id} fans={data.fans} />
+                                    <TouchableOpacity style={{marginLeft:20}} onPress={_ListToChatList}>
+                                        <IconSixin1 size={36} color='#8590a6' />
+                                    </TouchableOpacity>
+                                </View>
+                            )
+                        }
                     </View>
                 </TopWrapper>
                 <NickName>{data.nickname}</NickName>

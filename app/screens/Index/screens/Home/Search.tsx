@@ -5,6 +5,7 @@ import styled from 'styled-components/native'
 import IconZhibo from '../../../../components/iconfont/IconZhibo'
 import IconJiahao from '../../../../components/iconfont/IconJiahao'
 import Icon from '../../../../components/iconfont/Icon'
+import { useTypedSelector } from '../../../../store/reducer'
 
 
 interface Props {
@@ -13,6 +14,7 @@ interface Props {
 
 const Search: FC<Props> = ({modalRef}) => {
     const navigation = useNavigation()
+    const state = useTypedSelector(state => state.User.isLogin)
 
 
     const LinkTo = (name: string) => () => {
@@ -20,6 +22,7 @@ const Search: FC<Props> = ({modalRef}) => {
     }
 
     const openModal = ()=>{
+        if (!state) return navigation.navigate('SignIn')
         modalRef.current.openModal()
     }
 

@@ -3,7 +3,6 @@ import {  TouchableWithoutFeedback } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import styled from 'styled-components/native'
 import Icon from '../../../../components/iconfont/Icon'
-import IconShezhi from '../../../../components/iconfont/IconShezhi'
 
 const SearchInput: FC = () => {
     const navigation = useNavigation()
@@ -20,7 +19,6 @@ const SearchInput: FC = () => {
                     <Text ellipsizeMode='tail' numberOfLines={1}>React Hook!</Text>
                 </Input>
             </TouchableWithoutFeedback>
-            <IconShezhi color='#fff' size={28}/>
         </Wrapper>
     )
 }
@@ -39,7 +37,6 @@ flex-direction: row;
 align-items: center;
 justify-content: center;
 padding: 0 25px;
-margin-right: 15px;
 `
 const Text = styled.Text`
 font-size: 16px;

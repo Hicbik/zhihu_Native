@@ -9,19 +9,19 @@ import { useTypedSelector } from '../../../../store/reducer'
 import IconWenti from '../../../../components/iconfont/IconWenti'
 import IconClose from '../../../../components/iconfont/IconClose'
 import IconJiahao1 from '../../../../components/iconfont/IconJiahao1'
+import { getDay } from '../../../../utils/time'
+import { LinkToReplyEdit } from '../../../../utils/LinkTo'
 
 
 interface Props {
     setVisible: (state: boolean) => any,
-    visible: boolean
 }
 
 
 const width = Math.round(Dimensions.get('window').width)
-const height = Math.round(Dimensions.get('window').height)
 
 
-const HomeModalMain: FC<Props> = ({setVisible, visible}) => {
+const HomeModalMain: FC<Props> = ({setVisible}) => {
     const navigation = useNavigation()
     const state = useTypedSelector(state => state.User)
     const [questionData, setQuestionData] = useState<any[]>([])
@@ -39,12 +39,10 @@ const HomeModalMain: FC<Props> = ({setVisible, visible}) => {
     }
 
     const LinkToReply = ({question_id, title}: any) => () => {
-        setVisible(false)
-        navigation.navigate('ReplyEdit', {question_id, title})
+        LinkToReplyEdit({question_id,title})
     }
 
     const LinkToQuestion = () => {
-        setVisible(false)
         navigation.navigate('NewQuestion')
     }
 
@@ -101,7 +99,7 @@ const HomeModalMain: FC<Props> = ({setVisible, visible}) => {
                 <View style={{padding: 15, marginBottom: 20}}>
                     <TopBox>
                         <Avatar source={{uri: state.avatar}} />
-                        <Text style={{fontSize: 14, color: '#808080'}}>今天是你加入知乎的第1170天</Text>
+                        <Text style={{fontSize: 14, color: '#808080'}}>今天是你加入知乎的第 {getDay(state.create_time)} 天</Text>
                     </TopBox>
                    <TouchableWithoutFeedback onPress={LinkToQuestion}>
                        <QuestionBox style={{elevation: 10}}>

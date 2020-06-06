@@ -87,7 +87,7 @@ const CommentModalMain: FC<Props> = ({
         <Wrapper>
             <View style={{flexDirection: 'row', alignItems: 'center', padding: 15}}>
                 <TouchableOpacity onPress={onSetModal(false)}>
-                    <IconClose color='#646464' size={22} />
+                    <IconClose color='#646464' size={26} />
                 </TouchableOpacity>
                 <Title>全部 {comment_count} 条评论</Title>
             </View>
@@ -97,10 +97,10 @@ const CommentModalMain: FC<Props> = ({
                 onComment={_onComment}
                 cRef={commentRef}
             />
-            <KeyboardAvoidingView behavior='height' enabled style={{marginTop: 'auto'}}>
-                <InputBox >
+            <KeyboardAvoidingView behavior='position' enabled>
+                <InputBox>
                     {focus && <Text>{label.text}</Text>}
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: focus ? 25 : 0}}>
                         <Input
                             placeholder=' 请输入评论'
                             placeholderTextColor='#bfbfbf'
@@ -116,7 +116,6 @@ const CommentModalMain: FC<Props> = ({
                     </View>
                 </InputBox>
             </KeyboardAvoidingView>
-
         </Wrapper>
     )
 }
@@ -127,7 +126,6 @@ flex: 1;
 background-color: #fff;
 border-top-left-radius: 10px;
 border-top-right-radius: 10px;
-margin-top: 20px;
 `
 const Title = styled.Text`
 color: #646464;
@@ -140,6 +138,7 @@ const InputBox = styled.View`
 padding: 0 15px;
 border-top-width: 1px;
 border-top-color: #d3d3d3;
+margin-top: auto;
 `
 
 const Input = styled.TextInput`
@@ -160,4 +159,4 @@ color: #0084ff;
 font-size: 16px;
 `
 
-export default CommentModalMain
+export default React.memo(CommentModalMain)

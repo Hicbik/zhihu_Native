@@ -1,7 +1,8 @@
 import {UserProps} from '../../../type'
 
 const InitState = {
-    isLogin: false
+    isLogin: false,
+    avatar:'https://pic4.zhimg.com/aadd7b895_xs.jpg'
 }
 
 export default (state: UserProps = InitState, action: any): UserProps => {

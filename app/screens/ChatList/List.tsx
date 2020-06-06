@@ -1,7 +1,8 @@
 import React, { FC, useEffect, useRef } from 'react'
-import { FlatList, View } from 'react-native'
+import { FlatList, View, TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
 import { ChatTime, messageTime } from '../../utils/time'
+import { LinkToPeople } from '../../utils/LinkTo'
 
 interface Props {
     data: {
@@ -21,10 +22,21 @@ const List: FC<Props> = ({data, user}) => {
         listRef.current.scrollToEnd()
     }, [data.messageList.length])
 
+    const _LinkToPeople = () => {
+        if (data.user_id === '666') return
+        LinkToPeople({_id: data.user_id})
+    }
+
+    const _LinkToMyPeople = () => {
+        LinkToPeople({_id: user._id})
+    }
+
     const HeMessage = ({message}: { message: string }) => {
         return (
             <Wrapper>
-                <Avatar source={{uri: data.avatar}} />
+                <TouchableOpacity onPress={_LinkToPeople}>
+                    <Avatar source={{uri: data.avatar}} />
+                </TouchableOpacity>
                 <Massage>
                     <Tips />
                     <MsgText>{message}</MsgText>
@@ -36,7 +48,9 @@ const List: FC<Props> = ({data, user}) => {
     const MyMessage = ({message}: { message: string }) => {
         return (
             <Wrapper style={{flexDirection: 'row-reverse'}}>
-                <Avatar source={{uri: user.avatar}} />
+                <TouchableOpacity onPress={_LinkToMyPeople}>
+                    <Avatar source={{uri: user.avatar}} />
+                </TouchableOpacity>
                 <Massage style={{backgroundColor: '#0084ff'}}>
                     <MyTips />
                     <MsgText style={{color: '#fff'}}>{message}</MsgText>
@@ -69,6 +83,7 @@ const List: FC<Props> = ({data, user}) => {
             keyExtractor={_keyExtractor}
             ref={listRef}
             ListFooterComponent={<View style={{height: 200}} />}
+            showsVerticalScrollIndicator={false}
         />
     )
 }

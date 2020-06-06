@@ -3,6 +3,7 @@ import { useRoute, useNavigation, useFocusEffect } from '@react-navigation/nativ
 import { useDispatch } from 'react-redux'
 import styled from 'styled-components/native'
 import { useTypedSelector } from '../../store/reducer'
+import { NoticeIo } from '../../utils/io'
 import List from './List'
 import Input from './Input'
 
@@ -15,6 +16,8 @@ const ChatList: FC = () => {
     const chatList = useTypedSelector(state => state.Notice.chatList)
 
     const index = chatList.findIndex(value => value.user_id === params.user_id)
+
+
 
     useFocusEffect(
         useCallback(() => {
@@ -32,6 +35,7 @@ const ChatList: FC = () => {
                     type: 'notice/changeWin',
                     value: null
                 })
+                NoticeIo.SaveChat()
             }
         }, [])
     )

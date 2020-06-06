@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from 'react'
-import { useRoute, useNavigation } from '@react-navigation/native'
+import { useRoute, useNavigation, useIsFocused } from '@react-navigation/native'
 import { ToastAndroid, Animated } from 'react-native'
 import { useTypedSelector } from '../../store/reducer'
 import { Header, Right } from './Header'
@@ -10,7 +10,7 @@ import CommentModal from './CommentModal'
 import BottomBar from './BottomBar'
 
 const Question: FC = () => {
-
+    const isFocused = useIsFocused()
     const navigation = useNavigation()
     const params = useRoute<any>().params
     const state = useTypedSelector(state => state.User)
@@ -125,7 +125,7 @@ const Question: FC = () => {
                 }
             </Animated.View>
             {
-                replyList[index] && (
+                isFocused && replyList[index] && (
                     <CommentModal
                         cRef={modalRef}
                         comment_count={replyList[index].comment_count}
@@ -137,8 +137,6 @@ const Question: FC = () => {
                 )
             }
         </>
-
-
     )
 }
 

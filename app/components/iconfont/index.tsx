@@ -4,6 +4,10 @@
 import React, { FunctionComponent } from 'react';
 import { ViewProps } from 'react-native';
 import { GProps } from 'react-native-svg';
+import IconShijian from './IconShijian';
+import IconZuoxia from './IconZuoxia';
+import IconXingzhuang from './IconXingzhuang';
+import IconSixin1 from './IconSixin1';
 import IconZantong from './IconZantong';
 import IconGuanzhu from './IconGuanzhu';
 import IconPinglunShixin from './IconPinglunShixin';
@@ -41,7 +45,7 @@ import IconTongzhi from './IconTongzhi';
 import IconFaxian from './IconFaxian';
 import IconWenzhang from './IconWenzhang';
 
-export type IconNames = 'zantong' | 'guanzhu' | 'pinglun-shixin' | 'iconku-zhuanqu-' | 'huida' | 'dui' | 'bi' | 'xiala' | 'wenti' | 'fabu' | 'sanjiaoxing-xia1' | 'zan' | 'dianzan11-copy' | 'xiayige' | 'nv' | 'tubiaozhizuomoban' | 'jiahao1' | 'sanjiaoxing' | 'shezhi' | 'arrow-right' | 'arrow-lift' | 'arrow-up' | 'close' | 'arrow-down' | 'xiangshangsanjiaoxing' | 'xiangxiasanjiaoxing' | 'pinglun' | 'sousuo' | 'jiahao' | '-' | 'zhibo' | 'gengduo' | 'huabanfuben' | 'tongzhi' | 'faxian' | 'wenzhang';
+export type IconNames = 'shijian' | 'zuoxia' | 'xingzhuang' | 'sixin1' | 'zantong' | 'guanzhu' | 'pinglun-shixin' | 'iconku-zhuanqu-' | 'huida' | 'dui' | 'bi' | 'xiala' | 'wenti' | 'fabu' | 'sanjiaoxing-xia1' | 'zan' | 'dianzan11-copy' | 'xiayige' | 'nv' | 'tubiaozhizuomoban' | 'jiahao1' | 'sanjiaoxing' | 'shezhi' | 'arrow-right' | 'arrow-lift' | 'arrow-up' | 'close' | 'arrow-down' | 'xiangshangsanjiaoxing' | 'xiangxiasanjiaoxing' | 'pinglun' | 'sousuo' | 'jiahao' | '-' | 'zhibo' | 'gengduo' | 'huabanfuben' | 'tongzhi' | 'faxian' | 'wenzhang';
 
 interface Props extends GProps, ViewProps {
   name: IconNames;
@@ -51,6 +55,14 @@ interface Props extends GProps, ViewProps {
 
 const IconFont: FunctionComponent<Props> = ({ name, ...rest }) => {
   switch (name) {
+    case 'shijian':
+      return <IconShijian {...rest} />;
+    case 'zuoxia':
+      return <IconZuoxia {...rest} />;
+    case 'xingzhuang':
+      return <IconXingzhuang {...rest} />;
+    case 'sixin1':
+      return <IconSixin1 {...rest} />;
     case 'zantong':
       return <IconZantong {...rest} />;
     case 'guanzhu':

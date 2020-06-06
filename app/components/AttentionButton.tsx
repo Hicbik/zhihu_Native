@@ -34,6 +34,7 @@ const AttentionButton: FC<Props> = ({
     }
 
     const _onPress = () => {
+        if (people_id === user_id) return
         if (state) {
             Alert.alert(
                 '',

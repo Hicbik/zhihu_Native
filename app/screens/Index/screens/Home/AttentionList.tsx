@@ -1,78 +1,82 @@
-import React, { FC, useCallback, useState } from 'react'
-import { TouchableOpacity, TouchableWithoutFeedback, View, FlatList, Text } from 'react-native'
+import React, { FC, useCallback, useEffect, useState } from 'react'
+import { TouchableOpacity, TouchableNativeFeedback, View, FlatList, Text } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import styled from 'styled-components/native'
 import ListBase, { ItemWrapper, Image } from '../../../../components/ListBase'
-import { QuestionRequest } from '../../../../utils/request'
+import { QuestionRequest, UserRequest } from '../../../../utils/request'
 import IconGengduo from '../../../../components/iconfont/IconGengduo'
 import IconXiangshangsanjiaoxing from '../../../../components/iconfont/IconXiangshangsanjiaoxing'
 import IconPinglun from '../../../../components/iconfont/IconPinglun'
 import AvararPeople from '../../../../components/AvararPeople'
 import QuestionTitle from '../../../../components/QuestionTitle'
 import ReplyContent from '../../../../components/ReplyContent'
+import { useTypedSelector } from '../../../../store/reducer'
+import { DiffTime } from '../../../../utils/time'
+import { LinkToPeople, LinkToQuestion } from '../../../../utils/LinkTo'
 
 
 const AttentionList: FC = () => {
 
-    const navigation = useNavigation()
-    const [attentionPeople, setAttentionPeople] = useState<any[]>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+    const state = useTypedSelector(state => state.User)
+    const [attentionPeople, setAttentionPeople] = useState<any[]>([])
+
+    useEffect(() => {
+        ;(async () => {
+            const res = await UserRequest.getAttentionPeople({_id: state._id!,page:1, type: 'all'})
+            setAttentionPeople([...res.data])
+        })()
+    }, [state.isLogin])
+
+
 
     const Request = useCallback(({page}: { page: number }) => {
-        return QuestionRequest.RecommendListData({page})
-    }, [])
+        return QuestionRequest.PeopleAttentionReply({page, attentionList: state.attention!})
+    }, [state.isLogin])
 
     const LinkTo = (_id: string) => () => {
-        navigation.navigate('Question', {_id})
+        LinkToPeople({_id})
     }
 
     const _renderItem = ({item}: { item: any }) => {
         return (
-            <View>
+            <TouchableNativeFeedback onPress={LinkToQuestion({_id: item.question_id._id, reply_id: item._id})}>
                 <ItemWrapper style={{elevation: 1}}>
-                    <TouchableWithoutFeedback onPress={LinkTo(item._id)}>
-                        <View>
-                            <AvararPeople
-                                avatar='https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2181214712,1935140688&fm=26&gp=0.jpg'
-                                nickname='阿库娅'
-                                text='3分钟前·赞同了回答'
-                                style={{marginBottom:10}}
-                            />
-                            <QuestionTitle>宇宙的终极秘密有没有可能被人类知晓？</QuestionTitle>
-                            <ContentWrapper>
-                                <ReplyContent numberOfLines={3} style={{flex: 1}}>
-                                    朝闻道夕死可矣，人类知晓的那一刻，
-                                </ReplyContent>
-                                <Image
-                                    source={{uri: 'https://pic4.zhimg.com/50/v2-43ecd9604db459d8cd3a4fcf39fbc6eb_400x224.jpg'}}
-                                />
-                            </ContentWrapper>
-                        </View>
-                    </TouchableWithoutFeedback>
+                    <View>
+                        <AvararPeople
+                            avatar={item.user_id.avatar}
+                            nickname={item.user_id.nickname}
+                            text={`${DiffTime(item.create_time)}·回答了`}
+                            style={{marginBottom: 10}}
+                        />
+                        <QuestionTitle>{item.question_id.title}</QuestionTitle>
+                        <ContentWrapper>
+                            <ReplyContent numberOfLines={3} style={{flex: 1}}>{item.content}</ReplyContent>
+                            {!!item.image_field.length && <Image source={{uri: item.image_field[0]}} />}
+                        </ContentWrapper>
+                    </View>
                     <TipsWrapper>
                         <Tips>
-                            <IconXiangshangsanjiaoxing color='#0084ff' />
-                            <TipsText>1</TipsText>
+                            <IconXiangshangsanjiaoxing color='#999' />
+                            <TipsText>{item.like_count}</TipsText>
                         </Tips>
                         <Tips>
                             <IconPinglun color='#999' />
-                            <TipsText>1</TipsText>
+                            <TipsText>{item.comment_count}</TipsText>
                         </Tips>
                         <IconGengduo style={{marginLeft: 'auto'}} color='#e1e1e1' />
                     </TipsWrapper>
                 </ItemWrapper>
-            </View>
+            </TouchableNativeFeedback>
         )
     }
 
 
     const _headerItem = ({item, index}: { item: any, index: number }) => {
         return (
-            <TouchableOpacity>
+            <TouchableOpacity onPress={LinkTo(item._id)}>
                 <HeaderWrapper style={{marginRight: index === attentionPeople.length - 1 ? 15 : 3}}>
-                    <HeaderAvatar
-                        source={{uri: 'https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=2181214712,1935140688&fm=26&gp=0.jpg'}}
-                    />
-                    <HeaderText ellipsizeMode='tail' numberOfLines={1}>阿库娅</HeaderText>
+                    <HeaderAvatar source={{uri: item.avatar}} />
+                    <HeaderText ellipsizeMode='tail' numberOfLines={1}>{item.nickname}</HeaderText>
                 </HeaderWrapper>
             </TouchableOpacity>
         )
@@ -85,7 +89,7 @@ const AttentionList: FC = () => {
                 <FlatList
                     data={attentionPeople}
                     renderItem={_headerItem}
-                    keyExtractor={((item) => item.toString())}
+                    keyExtractor={((item) => item._id)}
                     horizontal
                     showsHorizontalScrollIndicator={false}
                 />
@@ -105,7 +109,7 @@ const AttentionList: FC = () => {
 }
 
 const HeaderWrapper = styled.View`
-width: 45px;
+width: 50px;
 margin-top: 10px;
 margin-left: 15px;
 `
@@ -119,7 +123,7 @@ margin-bottom: 5px;
 
 const HeaderText = styled.Text`
 color: #646464;
-font-size: 12px;
+font-size: 10px;
 text-align:center;
 `
 

@@ -1,5 +1,6 @@
-import React, { FC, Fragment,useRef } from 'react'
+import React, { FC, Fragment, useRef } from 'react'
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'
+import { useIsFocused } from '@react-navigation/native'
 import RecommendList from './RecommendList'
 import Search from './Search'
 import HotList from './HotList'
@@ -11,12 +12,13 @@ const Tab = createMaterialTopTabNavigator()
 
 
 const Home: FC = () => {
-
+    const isFocused = useIsFocused()
     const modalRef = useRef<any>()
+
 
     return (
         <Fragment>
-            <Search modalRef={modalRef}/>
+            <Search modalRef={modalRef} />
             <Tab.Navigator
                 tabBarOptions={{
                     pressColor: '#fff',
@@ -27,7 +29,7 @@ const Home: FC = () => {
                     tabStyle: {height: 45}
                 }}
                 initialRouteName='Recommend'
-                initialLayout={{ width: Dimensions.get('window').width }}
+                initialLayout={{width: Dimensions.get('window').width}}
             >
                 <Tab.Screen
                     name='Attention'
@@ -51,7 +53,7 @@ const Home: FC = () => {
                     }}
                 />
             </Tab.Navigator>
-            <HomeModal cRef={modalRef}/>
+            {isFocused && <HomeModal cRef={modalRef} />}
         </Fragment>
     )
 }

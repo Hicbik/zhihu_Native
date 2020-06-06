@@ -5,7 +5,6 @@ import store from './store'
 import App from './App'
 
 
-
 export default () => {
     return (
         <Provider store={store}>

@@ -36,3 +36,7 @@ export const messageTime = (prevTime: any, time: any) => {
     const diff = dayjs(prevTime).diff(dayjs(time), 'minute')
     return diff < -30
 }
+
+export const getDay = (time:any)=>{
+    return nowDate.diff(time, 'day')
+}

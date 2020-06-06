@@ -5,6 +5,7 @@ import IconGengduo from '../../components/iconfont/IconGengduo'
 import IconZan from '../../components/iconfont/IconZan'
 import IconPinglun from '../../components/iconfont/IconPinglun'
 import IconSanjiaoxingXia1 from '../../components/iconfont/IconSanjiaoxingXia1'
+import IconPinglunShixin from '../../components/iconfont/IconPinglunShixin'
 import { CommentRequest } from '../../utils/request'
 import { DiffTime } from '../../utils/time'
 import { useTypedSelector } from '../../store/reducer'
@@ -21,6 +22,7 @@ const CommentList: FC<Props> = ({reply_id, reply_user_id, onComment, cRef}) => {
     const state = useTypedSelector(state => state.User)
 
     const [data, setData] = useState<any[]>([])
+    const [isLoad, setIsLoad] = useState(true)
 
     useImperativeHandle(cRef, () => ({
         setData: getAjax
@@ -33,6 +35,7 @@ const CommentList: FC<Props> = ({reply_id, reply_user_id, onComment, cRef}) => {
     const getAjax = async () => {
         const res = await CommentRequest.findComment({reply_id})
         setData([...res.data])
+        if (res.data.length < 8) setIsLoad(false)
     }
 
     const _onLike = ({comment_id, type, index}: { comment_id: string, type: string, index: number }) => async () => {
@@ -202,6 +205,18 @@ const CommentList: FC<Props> = ({reply_id, reply_user_id, onComment, cRef}) => {
 
     const _keyExtractor = (item: any) => item._id
 
+    const _ListFooterComponent = () => {
+        if (!isLoad && data.length === 0) {
+            return (
+                <View style={{alignItems: 'center', marginTop: 50}}>
+                    <IconPinglunShixin size={60} color='#999' style={{marginBottom: 20}} />
+                    <TipsText style={{fontSize: 18}}>还没有评论，第一个发表评论</TipsText>
+                </View>
+            )
+        }
+        return null
+    }
+
     return (
         <FlatList
             data={data}
@@ -209,6 +224,7 @@ const CommentList: FC<Props> = ({reply_id, reply_user_id, onComment, cRef}) => {
             keyExtractor={_keyExtractor}
             initialNumToRender={8}
             style={{flex: 1}}
+            ListFooterComponent={_ListFooterComponent}
         />
     )
 }

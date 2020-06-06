@@ -14,7 +14,7 @@ interface Props {
     cRef?: any,
     Refresh?: boolean,
     onScroll?: (event: { nativeEvent: any }) => void,
-    footStyle?:any
+    footStyle?: any
 }
 
 
@@ -31,11 +31,12 @@ const useList = ({Request}: { Request: ({page}: { page: number }) => any }) => {
             await _getData({pageNum: 1})
             setRefreshing(false)
         })()
-    }, [])
+    }, [Request])
 
     const _getData = async ({pageNum}: { pageNum: number }) => {
         const res = await Request({page: pageNum})
         setPage(pageNum + 1)
+        setIsLoad(true)
 
         if (pageNum === 1) setData([...res.data])
         else setData([...data, ...res.data])
@@ -53,7 +54,6 @@ const useList = ({Request}: { Request: ({page}: { page: number }) => any }) => {
         await _getData({pageNum: 1})
         setRefreshing(false)
         setShowTips(true)
-        setIsLoad(true)
     }
 
     const _close = () => {
@@ -62,7 +62,7 @@ const useList = ({Request}: { Request: ({page}: { page: number }) => any }) => {
 
 
     return {
-        data, refreshing, showTips, isLoad, _onEndReached, _onRefresh, _close,
+        data, refreshing, showTips, isLoad, _onEndReached, _onRefresh, _close, setData
     }
 
 }
@@ -78,11 +78,11 @@ const ListBase: FC<Props> = ({
     onScroll,
     footStyle
 }) => {
-    const {data, refreshing, showTips, isLoad, _onEndReached, _onRefresh, _close} = useList({Request})
+    const {data, refreshing, showTips, isLoad, _onEndReached, _onRefresh, _close, setData} = useList({Request})
 
 
     useImperativeHandle(cRef, () => ({
-        _onRefresh
+        _onRefresh, setData
     }))
 
 
@@ -100,7 +100,7 @@ const ListBase: FC<Props> = ({
     const _ListFooterComponent = () => {
         if (isLoad && !!data.length) {
             return (
-                <ItemWrapper style={{elevation: 1, paddingTop: 25, marginBottom: 10,...footStyle}}>
+                <ItemWrapper style={{elevation: 1, paddingTop: 25, marginBottom: 10, ...footStyle}}>
                     <Skeleton />
                 </ItemWrapper>
             )

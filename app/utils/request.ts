@@ -4,7 +4,7 @@ import { ToastAndroid } from 'react-native'
 import { LinkToSingIn } from './navigation'
 import store from '../store'
 
-axios.defaults.baseURL = 'http://192.168.137.1:7001/'
+axios.defaults.baseURL = 'http://127.0.0.1:7001/'
 
 axios.interceptors.request.use(
     async config => {
@@ -84,7 +84,7 @@ export class UserRequest extends Base {
         return axios.get(this.url + 'getDynamicApp', {params: {user_id, page}})
     }
 
-    static getAttentionPeople ({_id, page}: { _id: string, page: number }) {
+    static getAttentionPeople ({_id, page}: { _id: string, page: number, type?: string }) {
         return axios.get(this.url + 'getAttentionPeople', {params: {_id, page}})
     }
 
@@ -97,6 +97,7 @@ export class UserRequest extends Base {
             axios.get(this.url + 'attention', {params: {_id, type}})
         ))
     }
+
     static getDynamic ({user_id, page}: { user_id: string, page: number }) {
         return axios.get(this.url + 'getDynamic', {params: {user_id, page}})
     }
@@ -109,12 +110,39 @@ export class UserRequest extends Base {
         return axios.get(this.url + 'getNoticeDynamic', {params: {page}})
     }
 
+    static ClearNotice () {
+        return this.No_Login(() => {
+            return axios.get(this.url + 'ClearNotice')
+        })
+    }
+
+
+    static search ({page, search}: { page: number, search: string }) {
+        return axios.get(this.url + 'search', {params: {page, search}})
+    }
+
+    static Edit ({nickname, one_sentence_introduction, gender, introduction, avatar}: { nickname: string, one_sentence_introduction: string, gender: string, introduction: string, avatar?: string }) {
+        return this.No_Login(() => (
+            axios.post(this.url + 'Edit', {
+                nickname,
+                one_sentence_introduction,
+                gender,
+                introduction,
+                avatar
+            })
+        ))
+    }
+
 }
 
 
 export class QuestionRequest extends Base {
     static url = 'question/'
 
+
+    static HotList ({page, type}: { page: number, type: string }) {
+        return axios.get(this.url + 'HotList', {params: {page, type}})
+    }
 
     static focus ({_id, type}: { _id: string, type: string }) {
         return this.No_Login(() => (
@@ -170,6 +198,14 @@ export class QuestionRequest extends Base {
         ))
     }
 
+    static searchList ({search, page}: { search: string, page: number }) {
+        return axios.get(this.url + 'searchList', {params: {page, search}})
+    }
+
+    static PeopleAttentionReply ({attentionList, page}: { attentionList: string[], page: number }) {
+        return axios.post(this.url + 'PeopleAttentionReply', {page, attentionList})
+    }
+
 
 }
 
@@ -208,3 +244,22 @@ export class CommentRequest extends Base {
 
 }
 
+export class LeaveMessageRequest extends Base {
+    static url = 'leaveMessage/'
+
+    static getData ({page}: { page: number }) {
+        return axios.get(this.url + 'getData', {params: {page}})
+    }
+
+    static create ({content}: { content: string }) {
+        return this.No_Login(() => {
+            return axios.get(this.url + 'create', {params: {content}})
+        })
+    }
+
+    static like ({type, _id}: { type: string, _id: string }) {
+        return this.No_Login(() => {
+            return axios.get(this.url + 'like', {params: {type, _id}})
+        })
+    }
+}

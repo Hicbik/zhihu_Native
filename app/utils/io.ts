@@ -26,7 +26,7 @@ export class NoticeIo {
 
         this.GetChat()
 
-        this.socket = io('ws://192.168.137.1:7001/', {
+        this.socket = io('ws://127.0.0.1:7001/', {
             query: {
                 userId: User._id
             },
@@ -127,7 +127,6 @@ export class NoticeIo {
             })
         }
         this.SaveChat()
-
     }
 
     static async SaveChat () {

@@ -1,32 +1,24 @@
 import React, { FC } from 'react'
-import { View, Text } from 'react-native'
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
 import { useTypedSelector } from '../../store/reducer'
+import Home from './screens/Home'
+import My from './screens/My'
+import Notice from './screens/Notice'
+import Find from './screens/Find'
 import IconWenzhang from '../../components/iconfont/IconWenzhang'
 import IconFaxian from '../../components/iconfont/IconFaxian'
 import IconTongzhi from '../../components/iconfont/IconTongzhi'
 import IconHuabanfuben from '../../components/iconfont/IconHuabanfuben'
 
-import Home from './screens/Home'
-import My from './screens/My'
-import Notice from './screens/Notice'
-
 const Tab = createMaterialBottomTabNavigator()
 
-const Demo = () => {
-    return (
-        <View>
-            <Text>adas</Text>
-        </View>
-    )
-}
 
 const Index: FC = () => {
-
     const state = useTypedSelector(state => state.User.isLogin)
     const NoticeState = useTypedSelector(state => state.Notice)
 
-    const showBadge = !!(NoticeState.full.attention + NoticeState.full.agree + NoticeState.full.news + NoticeState.chat)
+    const showBadge = !!(NoticeState.unread + NoticeState.chat)
+
 
     return (
         <Tab.Navigator
@@ -47,10 +39,9 @@ const Index: FC = () => {
                 name='Find'
                 options={{
                     title: '发现',
-                    tabBarIcon: ({color}) => <IconFaxian color={color} />
+                    tabBarIcon: ({color}) => <IconFaxian color={color} />,
                 }}
-                component={Demo}
-
+                component={Find}
             />
             <Tab.Screen
                 name='Notice'
@@ -60,6 +51,13 @@ const Index: FC = () => {
                     tabBarBadge: showBadge,
                 }}
                 component={Notice}
+                listeners={({navigation}) => ({
+                    tabPress: e => {
+                        e.preventDefault()
+                        if (!state) return navigation.navigate('SignIn')
+                        navigation.navigate('Notice')
+                    }
+                })}
             />
             <Tab.Screen
                 name='My'

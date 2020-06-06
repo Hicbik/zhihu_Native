@@ -1,21 +1,33 @@
 import React, { FC } from 'react'
 import { FlatList, View, TouchableNativeFeedback, TouchableOpacity } from 'react-native'
 import styled from 'styled-components/native'
+import { useDispatch } from 'react-redux'
 import { Badge } from 'react-native-paper'
 import { useTypedSelector } from '../../../../store/reducer'
+import { UserRequest } from '../../../../utils/request'
 import { ChatTime } from '../../../../utils/time'
 import { ListToChatList, LinkToNoticeDeal } from '../../../../utils/LinkTo'
 import IconZantong from '../../../../components/iconfont/IconZantong'
 import IconGuanzhu from '../../../../components/iconfont/IconGuanzhu'
 import IconPinglunShixin from '../../../../components/iconfont/IconPinglunShixin'
+import { NoticeIo } from '../../../../utils/io'
 
 
 const Message: FC = () => {
 
     const state = useTypedSelector(state => state.Notice)
+    const dispatch = useDispatch()
+
 
     const LinkTo = (user_id: string) => () => {
         ListToChatList({user_id})
+    }
+
+    const _onClearNotice = async () => {
+        const res = await UserRequest.ClearNotice()
+        if (res.state === 'err') return
+        dispatch({type: 'notice/ClearNotice'})
+        await NoticeIo.SaveChat()
     }
 
     const _renderItem = ({item}: { item: any }) => {
@@ -44,6 +56,24 @@ const Message: FC = () => {
 
     return (
         <Wrapper>
+            {
+                !!(state.unread + state.chat) && (
+                    <ClearView>
+                        <Text style={{fontSize: 14, color: '#666'}}>
+                            全部 {state.unread + state.chat} 条新消息
+                        </Text>
+                        <TouchableOpacity onPress={_onClearNotice}>
+                            <Text style={{
+                                borderColor: '#ddd',
+                                borderWidth: 0.5,
+                                padding: 3,
+                                borderRadius: 3,
+                                color: '#666'
+                            }}>全部已读</Text>
+                        </TouchableOpacity>
+                    </ClearView>
+                )
+            }
             <Header>
                 <TouchableOpacity onPress={LinkToNoticeDeal({type: '赞同'})}>
                     <View style={{alignItems: 'center'}}>
@@ -84,6 +114,13 @@ const Message: FC = () => {
 
 const Wrapper = styled.View`
 background-color: #fff;
+`
+const ClearView = styled.View`
+padding: 10px 15px;
+background-color: #f6f6f6;
+align-items: center;
+flex-direction: row;
+justify-content: space-between;
 `
 const Header = styled.View`
 flex-direction: row;

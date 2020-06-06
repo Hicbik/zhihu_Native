@@ -29,3 +29,11 @@ export const LinkToNoticeDeal = (props: { type: string }) => () => {
 export const LinkToPeople = (props: { _id: string }) => {
     navigation.current.navigate('People', {_id: props._id})
 }
+
+export const LinkToPeopleEdit = ()=>{
+    navigation.current.navigate('PeopleEdit')
+}
+
+export const LinkToSignIn = ()=>{
+    navigation.current.navigate('SignIn')
+}
