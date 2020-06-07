@@ -10,6 +10,7 @@ import { DiffTime } from '../../utils/time'
 import { BlurView } from '@react-native-community/blur'
 import Loading from './Loading'
 import BottomBar from './BottomBar'
+import { LinkToPeople } from '../../utils/LinkTo'
 
 interface Props {
     state: any,
@@ -44,6 +45,10 @@ const Reply: FC<Props> = ({state, replyData, nextReplyData, modalRef, BottomBarR
         viewRef.current = nativeEvent
     }
 
+    const LinkTo = (_id: string) => () => {
+        LinkToPeople({_id})
+    }
+
     return (
         <ScrollView style={{flex: 1}} ref={ref} onScroll={_onScroll}>
             {!replyData && <Loading />}
@@ -55,6 +60,7 @@ const Reply: FC<Props> = ({state, replyData, nextReplyData, modalRef, BottomBarR
                                 avatar={replyData.user_id.avatar}
                                 nickname={replyData.user_id.nickname}
                                 text={!!replyData.user_id.one_sentence_introduction.length && replyData.user_id.one_sentence_introduction}
+                                onPress={LinkTo(replyData.user_id._id)}
                             />
                             <AttentionButton
                                 user_id={state._id}
@@ -68,7 +74,7 @@ const Reply: FC<Props> = ({state, replyData, nextReplyData, modalRef, BottomBarR
                                 baseUrl: 'file:///android_asset/web/'
                             }}
                             scalesPageToFit={false}
-                            style={{flex: 1,width:'100%'}}
+                            style={{flex: 1, width: '100%'}}
                         />
                         <Comment
                             state={state}
@@ -95,6 +101,7 @@ const Reply: FC<Props> = ({state, replyData, nextReplyData, modalRef, BottomBarR
                                 avatar={nextReplyData.user_id.avatar}
                                 nickname={nextReplyData.user_id.nickname}
                                 text={!!nextReplyData.user_id.one_sentence_introduction.length && nextReplyData.user_id.one_sentence_introduction}
+                                onPress={LinkTo(nextReplyData.user_id._id)}
                             />
                             <AttentionButton
                                 user_id={state._id}

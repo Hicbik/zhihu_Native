@@ -47,7 +47,6 @@ const HotList: FC = () => {
     const handleActive = (index: number) => () => {
         if (index === tagActive) return
         setTagActive(index)
-        ListRef.current._onRefresh()
     }
 
     const _headerComponent = () => {

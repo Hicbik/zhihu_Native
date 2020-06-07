@@ -1,10 +1,11 @@
-import React, { FC, useState, useEffect, useCallback } from 'react'
+import React, { FC, useState, useEffect } from 'react'
 import { useRoute, useFocusEffect } from '@react-navigation/native'
 import { StatusBar, View } from 'react-native'
 import { UserRequest } from '../../utils/request'
 import Header from './Header'
 import PeopleTab from './PeopleTab'
 import { useTypedSelector } from '../../store/reducer'
+import { ActivityIndicator } from 'react-native-paper'
 
 
 const People: FC = () => {
@@ -28,7 +29,9 @@ const People: FC = () => {
     }, [params._id])
 
 
-    if (!data._id) return null
+    if (!data._id) return (
+        <ActivityIndicator animating={true} size='large' color='#0084ff' style={{marginTop:50}}/>
+    )
 
     return (
         <View style={{flex: 1, backgroundColor: '#fff'}}>

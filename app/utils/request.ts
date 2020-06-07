@@ -4,7 +4,7 @@ import { ToastAndroid } from 'react-native'
 import { LinkToSingIn } from './navigation'
 import store from '../store'
 
-axios.defaults.baseURL = 'http://127.0.0.1:7001/'
+axios.defaults.baseURL = 'http://sujie.ink:7001/'
 
 axios.interceptors.request.use(
     async config => {

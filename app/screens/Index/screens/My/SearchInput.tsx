@@ -16,7 +16,7 @@ const SearchInput: FC = () => {
             <TouchableWithoutFeedback onPress={LinkTo}>
                 <Input>
                     <Icon size={22} color='#83c3ff' />
-                    <Text ellipsizeMode='tail' numberOfLines={1}>React Hook!</Text>
+                    <Text ellipsizeMode='tail' numberOfLines={1}>欢迎来到知乎</Text>
                 </Input>
             </TouchableWithoutFeedback>
         </Wrapper>

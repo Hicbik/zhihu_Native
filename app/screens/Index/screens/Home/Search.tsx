@@ -1,5 +1,5 @@
 import React, { FC } from 'react'
-import { TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
+import { ToastAndroid, TouchableOpacity, TouchableWithoutFeedback, } from 'react-native'
 import { useNavigation } from '@react-navigation/native'
 import styled from 'styled-components/native'
 import IconZhibo from '../../../../components/iconfont/IconZhibo'
@@ -26,15 +26,19 @@ const Search: FC<Props> = ({modalRef}) => {
         modalRef.current.openModal()
     }
 
+    const openZb = ()=>{
+        ToastAndroid.show('这个按钮是为了对称！!', ToastAndroid.SHORT)
+    }
+
     return (
         <Wrapper>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={openZb}>
                 <IconZhibo size={22} color='#444' />
             </TouchableOpacity>
             <TouchableWithoutFeedback onPress={LinkTo('Search')}>
                 <Input>
                     <Icon size={22} color='#444' />
-                    <Text ellipsizeMode='tail' numberOfLines={1}>React Hook!</Text>
+                    <Text ellipsizeMode='tail' numberOfLines={1}>欢迎来到知乎</Text>
                 </Input>
             </TouchableWithoutFeedback>
             <TouchableOpacity onPress={openModal}>

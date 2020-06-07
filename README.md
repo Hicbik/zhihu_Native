@@ -5,14 +5,15 @@
 > #### 主要技术
 >
 >   * TypeScript
->
->   * React Native
->
+>  * React Native
 >   * Redux
->
->   * React-navigation      
+>  * React-navigation      
 
-    
+​    
+
+### 打包完的挨皮皮下载：http://sujie.ink/downApp
+
+
 
 > ####  部分截图
 

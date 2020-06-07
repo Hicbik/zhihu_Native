@@ -33,6 +33,7 @@ const Find: FC = () => {
 
     const _onLike = ({_id, type, index}: any) => async () => {
         const res = await LeaveMessageRequest.like({type, _id})
+        if (res.state === 'err') return
         listRef.current.setData((prevState: any[]) => prevState.map(
             (value, i) => ({
                 ...value,
@@ -40,6 +41,7 @@ const Find: FC = () => {
                 like_id: index === i ? res.data.like_id : value.like_id
             })
         ))
+
     }
 
     const _renderItem = ({item, index}: any) => {
@@ -102,7 +104,7 @@ const Find: FC = () => {
                 renderItem={_renderItem}
                 TipsTitle='留言已更新'
                 cRef={listRef}
-                footStyle={{ marginLeft: 15, marginRight: 15}}
+                footStyle={{marginLeft: 15, marginRight: 15}}
             />
             <InputModal visible={visible} onSetModal={onSetModal} listRef={listRef.current} />
         </Wrapper>
