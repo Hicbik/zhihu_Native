@@ -97,7 +97,7 @@ const CommentModalMain: FC<Props> = ({
                 onComment={_onComment}
                 cRef={commentRef}
             />
-            <KeyboardAvoidingView behavior='position' enabled>
+            <KeyboardAvoidingView behavior='padding' enabled>
                 <InputBox>
                     {focus && <Text>{label.text}</Text>}
                     <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: focus ? 25 : 0}}>
@@ -109,10 +109,13 @@ const CommentModalMain: FC<Props> = ({
                             onBlur={() => setFocus(false)}
                             onFocus={() => setFocus(true)}
                             ref={input}
+                            multiline
                         />
-                        <TouchableOpacity disabled={!(value.length >= 3)} onPress={_onButton}>
-                            <SendText style={{opacity: value.length >= 3 ? 1 : 0.4}}>发布</SendText>
-                        </TouchableOpacity>
+                      <View style={{justifyContent:'flex-end'}}>
+                          <TouchableOpacity disabled={!(value.length >= 3)} onPress={_onButton} style={{height:40}}>
+                              <SendText style={{opacity: value.length >= 3 ? 1 : 0.4}}>发布</SendText>
+                          </TouchableOpacity>
+                      </View>
                     </View>
                 </InputBox>
             </KeyboardAvoidingView>
@@ -139,6 +142,8 @@ padding: 0 15px;
 border-top-width: 1px;
 border-top-color: #d3d3d3;
 margin-top: auto;
+background-color: #fff;
+max-height: 400px;
 `
 
 const Input = styled.TextInput`
@@ -157,6 +162,7 @@ padding-left: 5px;
 const SendText = styled.Text`
 color: #0084ff;
 font-size: 16px;
+padding: 10px;
 `
 
 export default React.memo(CommentModalMain)
